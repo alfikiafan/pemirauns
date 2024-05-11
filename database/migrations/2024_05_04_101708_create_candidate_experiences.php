@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vote', function (Blueprint $table) {
+        Schema::create('candidate_experience', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_candidate');
-            $table->date('vote_date');
-            $table->string('selfie_picture');
-            $table->foreign('id_user')->references('id')->on('users');
+            $table->text('description');
+            $table->string('position');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->foreign('id_candidate')->references('id')->on('users');
+            $table->timestamps();
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vote');
+        Schema::dropIfExists('candidate_experience');
     }
 };

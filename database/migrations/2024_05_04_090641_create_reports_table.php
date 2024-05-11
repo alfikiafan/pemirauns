@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('candidate_experience', function (Blueprint $table) {
+        Schema::create('report', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_candidate');
-            $table->text('description');
-            $table->string('position');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->unsignedBigInteger('id_user');
+            $table->text('report');
+            $table->date('report_date');
+            $table->enum('report_status', ['send', 'pending','solved']);
+            $table->foreign('id_user')->references('id')->on('users');
             $table->timestamps();
-            $table->foreign('id_candidate')->references('id')->on('users');
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('candidate_experience');
+        Schema::dropIfExists('table_report');
     }
 };

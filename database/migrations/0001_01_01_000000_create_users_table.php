@@ -16,6 +16,7 @@ return new class extends Migration
             $table->enum('role', ['admin', 'user','candidate'])->default('user');
             $table->string('name');
             $table->string('nim')->unique()->nullable();
+            $table->enum('faculty',['FMIPA','FATISDA','FEB','FISIP','FT','FSRB','FK','FH','FKIP']);
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('vote_status', ['available','voted'])->default('available');

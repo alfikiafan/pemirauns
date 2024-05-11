@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('candidate_achievement', function (Blueprint $table) {
+        Schema::create('vote', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_candidate');
-            $table->integer('year');
-            $table->string('title');
-            $table->enum('type', ['competition', 'organizational', 'volunteer']); //need revise
-            $table->timestamps();
+            $table->unsignedBigInteger('id_pemira');
+            $table->date('vote_date');
+            $table->string('selfie_picture');
+            $table->foreign('id_user')->references('id')->on('users');
             $table->foreign('id_candidate')->references('id')->on('users');
+            $table->foreign('id_pemira')->references('id')->on('pemira');
+            $table->timestamps();
         });
     }
 
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('candidate_achievement');
+        Schema::dropIfExists('vote');
     }
 };
