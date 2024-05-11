@@ -69,7 +69,7 @@
           <li class="dropdown"><a href="#"><span>Help</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
                 <li><a href="#">QnA</a></li>
-                <li><a href="#">Ask to Help</a></li>
+                <li><a href="#">Customer Service</a></li>
             </ul>
           <li><a class="getstarted scrollto" href="{{ route('login') }}">Login</a></li>
         </ul>
