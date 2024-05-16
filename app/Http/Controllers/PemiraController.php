@@ -21,7 +21,7 @@ class PemiraController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'facculty' => 'required|string|max:255',
+            'faculty' => 'required|string|max:255',
             'year' => 'required|integer',
             'information' => 'required',
             'start_date' => 'required|date',
@@ -48,7 +48,7 @@ class PemiraController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'facculty' => 'required|string|max:255',
+            'faculty' => 'required|string|max:255',
             'year' => 'required|integer',
             'information' => 'required',
             'start_date' => 'required|date',

@@ -8,6 +8,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\PemiraController;
 use App\Http\Controllers\CandidateInfoController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('landing');
@@ -18,9 +19,10 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
-Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard')->middleware('auth');
-Route::get('/candidate/dashboard', [AuthController::class, 'dashboard'])->name('candidate.dashboard')->middleware('auth');
-Route::get('/user/dashboard', [AuthController::class, 'dashboard'])->name('user.dashboard')->middleware('auth');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
 
 Route::get('/pemira', [UserController::class, 'showPemira'])->name('pemira.index');
 Route::get('/pemira/{pemira_id}/candidates', [UserController::class, 'showCandidates'])->name('candidates.index');

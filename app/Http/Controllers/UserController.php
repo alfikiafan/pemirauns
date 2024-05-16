@@ -14,13 +14,6 @@ use Auth;
 
 class UserController extends Controller
 {
-    public function dashboard()
-    {
-        $pemiraInfo = Information::where('title', 'Pemilihan BEM UNS')->first();
-
-        return view('dashboard', compact('pemiraInfo'));
-    }
-
     public function showPemira()
     {
         // Menampilkan semua pemira
@@ -66,7 +59,7 @@ class UserController extends Controller
 
         $pemira = Pemira::findOrFail($request->id_pemira);
 
-        if ($user->facculty !== $pemira->facculty) {
+        if ($user->faculty !== $pemira->faculty) {
             return redirect()->back()->with('error', 'Anda hanya bisa memilih di fakultas Anda.');
         }
 
