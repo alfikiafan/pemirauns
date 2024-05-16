@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('candidate_profile', function (Blueprint $table) {
+        Schema::create('candidate_profiles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_candidate');
+            $table->foreignId('candidate_id')->constrained('users');
             $table->text('biography');
             $table->integer('year');
             $table->text('vision');
             $table->text('mission');
             $table->timestamps();
-            $table->foreign('id_candidate')->references('id')->on('users');
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('candidate_profile');
+        Schema::dropIfExists('candidate_profiles');
     }
 };

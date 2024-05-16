@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('candidate_achievement', function (Blueprint $table) {
+        Schema::create('candidate_achievements', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_candidate');
+            $table->foreignId('candidate_id')->constrained('users');
             $table->integer('year');
             $table->string('title');
-            $table->enum('type', ['competition', 'organizational', 'volunteer']); //need revise
-            $table->foreign('id_candidate')->references('id')->on('users');
+            $table->enum('type', ['competition', 'organizational', 'volunteer']);
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('candidate_achievement');
+        Schema::dropIfExists('candidate_achievements');
     }
 };

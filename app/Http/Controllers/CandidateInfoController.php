@@ -13,9 +13,9 @@ class CandidateInfoController extends Controller
     public function show($id)
     {
         $candidate = User::findOrFail($id);
-        $profile = CandidateProfile::where('id_candidate', $id)->first();
-        $achievements = CandidateAchievement::where('id_candidate', $id)->get();
-        $experiences = CandidateExperience::where('id_candidate', $id)->get();
+        $profile = CandidateProfile::where('candidate_id', $id)->first();
+        $achievements = CandidateAchievement::where('candidate_id', $id)->get();
+        $experiences = CandidateExperience::where('candidate_id', $id)->get();
 
         return view('candidates.info', compact('candidate', 'profile', 'achievements', 'experiences'));
     }
@@ -30,7 +30,7 @@ class CandidateInfoController extends Controller
         ]);
 
         $profile = CandidateProfile::updateOrCreate(
-            ['id_candidate' => $id],
+            ['candidate_id' => $id],
             [
                 'biography' => $request->biography,
                 'year' => $request->year,
@@ -51,7 +51,7 @@ class CandidateInfoController extends Controller
         ]);
 
         CandidateAchievement::create([
-            'id_candidate' => $id,
+            'candidate_id' => $id,
             'year' => $request->year,
             'title' => $request->title,
             'type' => $request->type,
@@ -76,13 +76,13 @@ class CandidateInfoController extends Controller
             'type' => $request->type,
         ]);
 
-        return redirect()->route('candidates.info', $achievement->id_candidate)->with('success', 'Achievement updated successfully.');
+        return redirect()->route('candidates.info', $achievement->candidate_id)->with('success', 'Achievement updated successfully.');
     }
 
     public function destroyAchievement($achievement_id)
     {
         $achievement = CandidateAchievement::findOrFail($achievement_id);
-        $candidate_id = $achievement->id_candidate;
+        $candidate_id = $achievement->candidate_id;
         $achievement->delete();
 
         return redirect()->route('candidates.info', $candidate_id)->with('success', 'Achievement deleted successfully.');
@@ -98,7 +98,7 @@ class CandidateInfoController extends Controller
         ]);
 
         CandidateExperience::create([
-            'id_candidate' => $id,
+            'candidate_id' => $id,
             'description' => $request->description,
             'position' => $request->position,
             'start_date' => $request->start_date,
@@ -126,13 +126,13 @@ class CandidateInfoController extends Controller
             'end_date' => $request->end_date,
         ]);
 
-        return redirect()->route('candidates.info', $experience->id_candidate)->with('success', 'Experience updated successfully.');
+        return redirect()->route('candidates.info', $experience->candidate_id)->with('success', 'Experience updated successfully.');
     }
 
     public function destroyExperience($experience_id)
     {
         $experience = CandidateExperience::findOrFail($experience_id);
-        $candidate_id = $experience->id_candidate;
+        $candidate_id = $experience->candidate_id;
         $experience->delete();
 
         return redirect()->route('candidates.info', $candidate_id)->with('success', 'Experience deleted successfully.');

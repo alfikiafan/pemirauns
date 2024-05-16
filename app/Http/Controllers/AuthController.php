@@ -20,7 +20,19 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('/dashboard');
+            $user = Auth::user();
+
+            // Redirect ke dashboard berdasarkan role
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } elseif ($user->role === 'candidate') {
+                return redirect()->route('candidate.dashboard');
+            } elseif ($user->role === 'voter') {
+                return redirect()->route('user.dashboard');
+            } else {
+                // Jika role tidak dikenali, redirect ke dashboard umum
+                return redirect()->route('dashboard');
+            }
         } else {
             return redirect()->back()->withInput()->withErrors(['email' => 'Invalid email or password']);
         }
@@ -58,17 +70,33 @@ class AuthController extends Controller
             'student_card' => $studentCardPath,
             'user_photo' => $userPhotoPath,
         ]);
-        return redirect('/');
-    }    
-    
+
+        // Setelah registrasi, langsung login dan redirect ke dashboard
+        Auth::login($user);
+
+        // Redirect ke dashboard berdasarkan role (default: user)
+        return redirect()->route('dashboard');
+    }
 
     public function logout()
     {
         Auth::logout();
         return redirect('/');
     }
+
     public function dashboard()
     {
-        return view('dashboard');
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            return view('admin.dashboard');
+        } elseif ($user->role === 'candidate') {
+            return view('candidate.dashboard');
+        } elseif ($user->role === 'voter') {
+            return view('user.dashboard');
+        } else {
+            // Jika role tidak dikenali, redirect ke dashboard umum
+            return view('dashboard');
+        }
     }
 }

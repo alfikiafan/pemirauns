@@ -10,7 +10,7 @@ class ReportController extends Controller
 {
     public function index()
     {
-        $reports = Report::where('id_user', Auth::id())->get();
+        $reports = Report::where('voter_id', Auth::id())->get();
         return view('reports.index', compact('reports'));
     }
 
@@ -28,7 +28,7 @@ class ReportController extends Controller
         ]);
 
         Report::create([
-            'id_user' => Auth::id(),
+            'voter_id' => Auth::id(),
             'report' => $request->report,
             'report_date' => $request->report_date,
             'report_status' => $request->report_status,

@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('information', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_admin');
+            $table->foreignId('admin_id')->constrained('users');
             $table->string('title');
             $table->text('content');
             $table->date('publish_date');
-            $table->foreign('id_admin')->references('id')->on('users');
-            $table->timestamps(); 
+            $table->timestamps();
         });
     }
 

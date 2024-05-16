@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('candidate_experience', function (Blueprint $table) {
+        Schema::create('candidate_experiences', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_candidate');
+            $table->foreignId('candidate_id')->constrained('users');
             $table->text('description');
             $table->string('position');
             $table->date('start_date');
             $table->date('end_date');
-            $table->foreign('id_candidate')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('candidate_experience');
+        Schema::dropIfExists('candidate_experiences');
     }
 };

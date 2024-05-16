@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('pemira', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_vote');
-            $table->enum('faculty',['FMIPA','FATISDA','FEB','FISIP','FT','FSRB','FK','FH','FKIP']); //Need Revise
+            $table->enum('faculty', [
+                'FMIPA', 'FATISDA', 'FEB', 'FISIP', 'FT', 'FSRB', 'FK', 'FH', 'FKIP'
+            ]);
+            $table->enum('type', ['university', 'faculty']);
             $table->text('information');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->foreign('id_vote')->references('id')->on('vote');
+            $table->dateTime('start_datetime');
+            $table->dateTime('end_datetime');
             $table->timestamps();
         });
     }

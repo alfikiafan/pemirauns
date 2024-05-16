@@ -28,7 +28,7 @@ class InformationController extends Controller
         ]);
 
         Information::create([
-            'id_admin' => Auth::id(),
+            'admin_id' => Auth::id(),
             'title' => $request->title,
             'content' => $request->content,
             'publish_date' => $request->publish_date,

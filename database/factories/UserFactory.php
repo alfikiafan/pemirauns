@@ -29,6 +29,13 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'role' => 'voter',  // Default role, will be overridden as needed
+            'nim' => $this->faker->unique()->numerify('########'),
+            'faculty' => $this->faker->randomElement(['FMIPA', 'FATISDA', 'FEB', 'FISIP', 'FT', 'FSRB', 'FK', 'FH', 'FKIP']),
+            'vote_status' => 'available',
+            'student_card' => $this->faker->imageUrl(),
+            'user_photo' => $this->faker->imageUrl(),
+            'user_status' => 'approved',  // Default status, can be changed in the seeder
         ];
     }
 

@@ -13,16 +13,19 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->enum('role', ['admin', 'user','candidate'])->default('user');
+            $table->enum('role', ['admin', 'candidate', 'voter'])->default('voter');
             $table->string('name');
-            $table->string('nim')->unique()->nullable();
-            $table->enum('faculty',['FMIPA','FATISDA','FEB','FISIP','FT','FSRB','FK','FH','FKIP']);
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('vote_status', ['available','voted'])->default('available');
+            $table->string('nim')->unique()->nullable();
+            $table->enum('faculty', [
+                'FMIPA', 'FATISDA', 'FEB', 'FISIP', 'FT', 'FSRB', 'FK', 'FH', 'FKIP'
+            ]);
+            $table->enum('vote_status', ['available', 'voted'])->default('available');
             $table->string('student_card')->nullable();
             $table->string('user_photo')->nullable();
             $table->string('user_status')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -18,9 +18,11 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
-Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
+Route::get('/admin/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard')->middleware('auth');
+Route::get('/candidate/dashboard', [AuthController::class, 'dashboard'])->name('candidate.dashboard')->middleware('auth');
+Route::get('/user/dashboard', [AuthController::class, 'dashboard'])->name('user.dashboard')->middleware('auth');
 
-Route::get('/pemira', [UserController::class, 'showPemiras'])->name('pemira.index');
+Route::get('/pemira', [UserController::class, 'showPemira'])->name('pemira.index');
 Route::get('/pemira/{pemira_id}/candidates', [UserController::class, 'showCandidates'])->name('candidates.index');
 Route::get('/candidates/{id}', [UserController::class, 'showCandidateProfile'])->name('candidates.profile');
 Route::post('/vote', [UserController::class, 'vote'])->name('vote')->middleware('auth');

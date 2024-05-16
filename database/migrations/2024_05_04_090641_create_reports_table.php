@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('report', function (Blueprint $table) {
+        Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_user');
+            $table->foreignId('voter_id')->constrained('users');
             $table->text('report');
             $table->date('report_date');
-            $table->enum('report_status', ['send', 'pending','solved']);
-            $table->foreign('id_user')->references('id')->on('users');
+            $table->enum('report_status', ['send', 'pending', 'solved']);
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_report');
+        Schema::dropIfExists('reports');
     }
 };

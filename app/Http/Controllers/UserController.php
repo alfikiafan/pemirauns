@@ -7,13 +7,21 @@ use App\Models\User;
 use App\Models\CandidateProfile;
 use App\Models\CandidateAchievement;
 use App\Models\CandidateExperience;
+use App\Models\Information;
 use App\Models\Pemira;
 use App\Models\Vote;
 use Auth;
 
 class UserController extends Controller
 {
-    public function showPemiras()
+    public function dashboard()
+    {
+        $pemiraInfo = Information::where('title', 'Pemilihan BEM UNS')->first();
+
+        return view('dashboard', compact('pemiraInfo'));
+    }
+
+    public function showPemira()
     {
         // Menampilkan semua pemira
         $pemira = Pemira::all();
@@ -37,9 +45,9 @@ class UserController extends Controller
     public function showCandidateProfile($id)
     {
         $candidate = User::findOrFail($id);
-        $profile = CandidateProfile::where('id_candidate', $id)->first();
-        $achievements = CandidateAchievement::where('id_candidate', $id)->get();
-        $experiences = CandidateExperience::where('id_candidate', $id)->get();
+        $profile = CandidateProfile::where('candidate_id', $id)->first();
+        $achievements = CandidateAchievement::where('candidate_id', $id)->get();
+        $experiences = CandidateExperience::where('candidate_id', $id)->get();
         return view('candidates.profile', compact('candidate', 'profile', 'achievements', 'experiences'));
     }
 
@@ -51,7 +59,7 @@ class UserController extends Controller
         }
 
         $request->validate([
-            'id_candidate' => 'required|exists:users,id',
+            'candidate_id' => 'required|exists:users,id',
             'id_pemira' => 'required|exists:pemira,id',
             'selfie_picture' => 'required|image|max:2048'
         ]);
@@ -65,8 +73,8 @@ class UserController extends Controller
         $selfiePath = $request->file('selfie_picture')->store('selfie_pictures', 'public');
 
         $vote = new Vote([
-            'id_user' => $user->id,
-            'id_candidate' => $request->id_candidate,
+            'voter_id' => $user->id,
+            'candidate_id' => $request->candidate_id,
             'id_pemira' => $request->id_pemira,
             'vote_date' => now(),
             'selfie_picture' => $selfiePath
