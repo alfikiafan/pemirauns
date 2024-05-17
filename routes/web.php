@@ -9,10 +9,15 @@ use App\Http\Controllers\InformationController;
 use App\Http\Controllers\PemiraController;
 use App\Http\Controllers\CandidateInfoController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LandingController;
 
-Route::get('/', function () {
-    return view('landing');
-})->name('landing');
+// Route::get('/', function () {
+//     return view('landing');
+// })->name('landing');
+
+Route::get('/', [LandingController::class, 'index'])->name('landing');
+// Route::get('/candidate', [LandingController::class, 'showCandidate'])->name('show.candidate');
+Route::get('/candidate{user:id}', [LandingController::class, 'showCandidate'])->name('show.candidate');
 // Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
