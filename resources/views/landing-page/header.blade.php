@@ -18,7 +18,7 @@
                 @foreach ($candidates as $candidate)
                 <li class="dropdown"><a href="#"><span>Paslon {{ $loop->iteration }}</span> <i class="bi bi-chevron-right"></i></a>
                   <ul>
-                    <li><a href="{{ route('show.candidate', $candidate->id) }}">Biografi</a></li>
+                    <li><a href="{{ route('candidate', $candidate->id) }}">Biografi</a></li>
                     <li><a href="#">Video Kampanye</a></li>
                     <li><a href="#">Riwayat Prestasi</a></li>
                   </ul>

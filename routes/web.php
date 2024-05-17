@@ -13,7 +13,7 @@ use App\Http\Controllers\LandingController;
 
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
-Route::get('/candidate{user:id}', [LandingController::class, 'showCandidate'])->name('show.candidate');
+Route::get('/candidate{user:id}', [LandingController::class, 'candidate'])->name('candidate');
 // Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
