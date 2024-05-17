@@ -16,7 +16,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $pemiras = Pemira::all();
+        $all_pemira = Pemira::all();
         $informations = Information::all();
 
         if ($user->role === 'admin') {
@@ -28,7 +28,7 @@ class DashboardController extends Controller
             $profile = CandidateProfile::where('candidate_id', $user->id)->first();
             return view('candidate.dashboard', compact('profile', 'pemiras', 'informations'));
         } else {
-            return view('user.dashboard', compact('pemiras', 'informations'));
+            return view('user.dashboard', compact('all_pemira', 'informations'));
         }
     }
 }
