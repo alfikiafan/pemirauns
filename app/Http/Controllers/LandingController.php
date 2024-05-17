@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 class LandingController extends Controller
 {
     public function index(){
-        // dd($candidate);
         $candidates = DB::table('users')
         ->where('role', '=', 'candidate')
         ->select('users.id as id')
@@ -19,7 +18,7 @@ class LandingController extends Controller
         ]);
     }
 
-    public function showCandidate(User $user){
+    public function candidate(User $user){
         $candidates = DB::table('users')
         ->where('role', '=', 'candidate')
         ->get();
