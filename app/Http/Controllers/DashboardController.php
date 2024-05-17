@@ -23,10 +23,10 @@ class DashboardController extends Controller
             $reports = Report::all();
             $candidates = User::where('role', 'candidate')->get();
             $voters = User::where('role', 'voter')->get();
-            return view('admin.dashboard', compact('pemiras', 'informations', 'reports', 'candidates', 'voters'));
+            return view('admin.dashboard', compact('all_pemira', 'informations', 'reports', 'candidates', 'voters'));
         } elseif ($user->role === 'candidate') {
             $profile = CandidateProfile::where('candidate_id', $user->id)->first();
-            return view('candidate.dashboard', compact('profile', 'pemiras', 'informations'));
+            return view('candidate.dashboard', compact('profile', 'all_pemira', 'informations'));
         } else {
             return view('user.dashboard', compact('all_pemira', 'informations'));
         }

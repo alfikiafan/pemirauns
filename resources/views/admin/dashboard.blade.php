@@ -34,7 +34,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5>Ongoing Pemira</h5>
-                    <p>{{ $pemiras->count() }}</p>
+                    <p>{{ $all_pemira->count() }}</p>
                 </div>
             </div>
         </div>

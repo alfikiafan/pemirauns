@@ -32,7 +32,7 @@
             <h2>Informasi Pemira</h2>
         </div>
         <div class="card-body">
-            @foreach ($pemiras as $pemira)
+            @foreach ($all_pemira as $pemira)
                 <div class="pemira-item mb-3">
                     <h3>{{ $pemira->faculty }} - {{ $pemira->type == 'university' ? 'Universitas' : 'Fakultas' }}</h3>
                     <p>{{ $pemira->information }}</p>
