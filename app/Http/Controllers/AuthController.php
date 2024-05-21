@@ -21,7 +21,29 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('/dashboard');
+            $user = Auth::user();
+
+            if ($user->role === 'admin' || $user->role === 'candidate') {
+                return redirect()->intended('/dashboard');
+            }
+
+            if ($user->role === 'voter') {
+                if ($user->user_status === 'approved') {
+                    return redirect()->intended('/dashboard');
+                } elseif ($user->user_status === 'rejected') {
+                    Auth::logout();
+                    return redirect()->back()->withInput()->withErrors(['email' => 'Your account has been rejected. Please contact support for more information.']);
+                } elseif (is_null($user->user_status)) {
+                    Auth::logout();
+                    return redirect()->back()->withInput()->withErrors(['email' => 'Your account is still under validation. Please wait for the approval.']);
+                } else {
+                    Auth::logout();
+                    return redirect()->back()->withInput()->withErrors(['email' => 'Your account status does not allow you to log in.']);
+                }
+            }
+
+            Auth::logout();
+            return redirect()->back()->withInput()->withErrors(['email' => 'Invalid user role.']);
         } else {
             return redirect()->back()->withInput()->withErrors(['email' => 'Invalid email or password']);
         }

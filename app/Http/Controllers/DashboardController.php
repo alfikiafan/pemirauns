@@ -36,7 +36,7 @@ class DashboardController extends Controller
     {
         $request->validate([
             'user_id' => 'required|exists:users,id',
-            'user_status' => 'required|in:tervalidasi,ditolak'
+            'user_status' => 'required|in:approved,rejected'
         ]);
 
         $user = User::find($request->user_id);

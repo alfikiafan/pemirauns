@@ -176,11 +176,11 @@
                                 <select name="user_status" required
                                     onchange="document.getElementById('status-form-{{ $voter->id }}').submit();">
                                     <option value="">Select Status</option>
-                                    <option value="tervalidasi"
-                                        {{ $voter->user_status == 'tervalidasi' ? 'selected' : '' }}>Tervalidasi
+                                    <option value="approved" {{ $voter->user_status == 'approved' ? 'selected' : '' }}>
+                                        Approved
                                     </option>
-                                    <option value="ditolak" {{ $voter->user_status == 'ditolak' ? 'selected' : '' }}>
-                                        Ditolak</option>
+                                    <option value="rejected" {{ $voter->user_status == 'rejected' ? 'selected' : '' }}>
+                                        Rejected</option>
                                 </select>
                             </form>
                         </td>
