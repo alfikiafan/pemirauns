@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 
 class AuthController extends Controller
 {
@@ -39,17 +40,32 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'student_card' => 'required|image|max:2048',
-            'user_photo_data' => 'required', 
+            'user_photo_data' => 'required',
         ]);
     
-        $studentCardPath = $request->file('student_card')->store('public/student_cards');
+        $studentCardsPath = public_path('images/student_cards');
+        $userPhotosPath = public_path('images/user_photos');
+    
+        if (!File::exists($studentCardsPath)) {
+            File::makeDirectory($studentCardsPath, 0755, true);
+        }
+    
+        if (!File::exists($userPhotosPath)) {
+            File::makeDirectory($userPhotosPath, 0755, true);
+        }
+    
+        $studentCard = $request->file('student_card');
+        $studentCardFilename = uniqid() . '.' . $studentCard->getClientOriginalExtension();
+        $studentCard->move($studentCardsPath, $studentCardFilename);
+        $studentCardPath = 'images/student_cards/' . $studentCardFilename;
     
         $userPhotoData = $request->input('user_photo_data');
         $userPhoto = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $userPhotoData));
-        $userPhotoPath = 'public/user_photos/' . uniqid() . '.jpg';
+        $userPhotoFilename = uniqid() . '.jpg';
+        $userPhotoFullPath = $userPhotosPath . '/' . $userPhotoFilename;
+        File::put($userPhotoFullPath, $userPhoto);
+        $userPhotoPath = 'images/user_photos/' . $userPhotoFilename;
     
-        Storage::put($userPhotoPath, $userPhoto);
-
         $user = User::create([
             'name' => $request->input('name'),
             'nim' => $request->input('nim'),
@@ -58,8 +74,9 @@ class AuthController extends Controller
             'student_card' => $studentCardPath,
             'user_photo' => $userPhotoPath,
         ]);
+    
         return redirect('/');
-    }    
+    } 
     
 
     public function logout()

@@ -24,6 +24,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
+Route::post('/dashboard/update-status', [DashboardController::class, 'updateAccountStatus'])->name('dashboard.updateAccountStatus');
 
 Route::get('/pemira', [UserController::class, 'showPemira'])->name('pemira.index');
 Route::get('/pemira/{pemira_id}/candidates', [UserController::class, 'showCandidates'])->name('candidates.index');

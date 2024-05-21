@@ -31,4 +31,18 @@ class DashboardController extends Controller
             return view('user.dashboard', compact('all_pemira', 'informations'));
         }
     }
+
+    public function updateAccountStatus(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'user_status' => 'required|in:tervalidasi,ditolak'
+        ]);
+
+        $user = User::find($request->user_id);
+        $user->user_status = $request->user_status;
+        $user->save();
+
+        return redirect()->route('dashboard')->with('success', 'User status updated successfully.');
+    }
 }
