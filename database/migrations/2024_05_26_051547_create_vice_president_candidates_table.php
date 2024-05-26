@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('information', function (Blueprint $table) {
+        Schema::create('vice_president_candidates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('admin_id')->constrained('users');
-            $table->string('title');
-            $table->text('content');
-            $table->date('publish_date');
+            $table->foreignId('user_id')->constrained();;
+            $table->text('biography');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('information');
+        Schema::dropIfExists('vice_president_candidate');
     }
 };

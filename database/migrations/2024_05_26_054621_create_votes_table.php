@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('candidate_achievements', function (Blueprint $table) {
+        Schema::create('votes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('candidate_id')->constrained('users');
-            $table->integer('year');
-            $table->string('title');
-            $table->enum('type', ['competition', 'organizational', 'volunteer']);
+            $table->foreignId('user_id')->constrained();;
+            $table->foreignId('candidate_id')->constrained();;
+            $table->dateTime('date');
+            $table->string('photo');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('candidate_achievements');
+        Schema::dropIfExists('votes');
     }
 };
