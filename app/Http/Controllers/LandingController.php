@@ -27,7 +27,7 @@ class LandingController extends Controller
         ->where('users.id', '=', $user->id)
         ->select('users.name as name',
                 'candidate_profiles.biography as biography',
-                'candidate_profiles.vision as vision',
+                'candidate_profiles.vision as vision', 
                 'candidate_profiles.mission as mission',)
         ->get();
         // dd($selectedCandidate);
