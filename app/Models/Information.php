@@ -15,4 +15,8 @@ class Information extends Model
         'content',
         'publish_date',
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

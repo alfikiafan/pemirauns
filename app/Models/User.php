@@ -22,5 +22,32 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function votes(){
+        return $this->hasMany(Vote::class);
+    }
+
+    public function vicePresidentCandidates(){
+        return $this->hasMany(VicePresidentCandidate::class);
+    }
+
+    public function presidentCandidates(){
+        return $this->hasMany(PresidentCandidate::class);
+    }
+
+    public function informations(){
+        return $this->hasMany(Information::class);
+    }
+
+    public function experiences(){
+        return $this->hasMany(Experience::class);
+    }
+    public function achievment(){
+        return $this->hasMany(Achievment::class);
+    }
+
+    public function roles(){
+        return $this->belongsToMany(Role::class);
+    }
+
 
 }
