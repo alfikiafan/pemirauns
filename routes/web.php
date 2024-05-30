@@ -3,11 +3,12 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\AdminUnivController;
-use App\Http\Controllers\AdminFakultasController;
 use App\Http\Controllers\VoterController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\ElectionController;
+use App\Http\Controllers\AdminUnivController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminFakultasController;
 
 // Route::get('/', function () {
 //     return view('landing-page.landing');
@@ -43,6 +44,6 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/admin/manage-user', [VoterController::class, 'index'])->name('admin.manage_user');
 Route::post('/update-status', [VoterController::class, 'updateAccountStatus'])->name('admin.updateAccountStatus');
 
-Route::get('/admin/manage-election', function () {
-    return view('admin.manage_election');
-})->name('admin.manage_election');
+Route::get('/admin/manage-election', [ElectionController::class, 'index'])->name('admin.manage_election');
+Route::post('/admin/manage-election',[ElectionController::class, 'create'])->name('admin.manage_create-election');
+Route::delete('/admin/manage-election/{id}', [ElectionController::class, 'delete'])->name('admin.manage_delete-election');
