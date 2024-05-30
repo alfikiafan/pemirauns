@@ -44,7 +44,8 @@
                 </a>
             </li>
             <li class="nav-item pb-2">
-                <a class="nav-link {{ (Request::is('#') ? 'active' : '') }}" href="#">
+                <a class="nav-link {{ (Request::is('admin.manage-election') ? 'active' : '') }}" 
+                href="{{ route('admin.manage_election') }}">
                     <span class="nav-link-text ms-1">Election Management</span>
                 </a>
             </li>

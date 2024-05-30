@@ -42,3 +42,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/admin/manage-user', [VoterController::class, 'index'])->name('admin.manage_user');
 Route::post('/update-status', [VoterController::class, 'updateAccountStatus'])->name('admin.updateAccountStatus');
+
+Route::get('/admin/manage-election', function () {
+    return view('admin.manage_election');
+})->name('admin.manage_election');
