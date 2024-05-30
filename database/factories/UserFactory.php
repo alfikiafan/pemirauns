@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -21,21 +21,23 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+    protected $model = User::class;
+
+    public function definition()
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
-            'role' => 'voter',  // Default role, will be overridden as needed
+            'name' => $this->faker->name,
             'nim' => $this->faker->unique()->numerify('########'),
-            'faculty' => $this->faker->randomElement(['FMIPA', 'FATISDA', 'FEB', 'FISIP', 'FT', 'FSRB', 'FK', 'FH', 'FKIP']),
-            'vote_status' => 'available',
+            'email' => $this->faker->unique()->safeEmail,
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'), // password=="password"
+            'remember_token' => Str::random(10),
             'student_card' => $this->faker->imageUrl(),
             'user_photo' => $this->faker->imageUrl(),
-            'user_status' => 'approved',  // Default status, can be changed in the seeder
+            'vote_status' => 'available',
+            'batch' => $this->faker->numberBetween(2015, 2023),
+            'faculty' => $this->faker->randomElement(['FMIPA', 'FATISDA', 'FEB', 'FISIP', 'FT', 'FSRD', 'FK', 'FH', 'FKIP', 'FIB', 'FP', 'Psikologi', 'FKO']),
+            'user_status' => $this->faker->randomElement(['approved', 'not_approved', 'pending']),
         ];
     }
 

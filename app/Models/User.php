@@ -34,19 +34,19 @@ class User extends Authenticatable
         return $this->hasMany(PresidentCandidate::class);
     }
 
-    public function informations(){
+    public function information(){
         return $this->hasMany(Information::class);
     }
 
     public function experiences(){
         return $this->hasMany(Experience::class);
     }
-    public function achievment(){
-        return $this->hasMany(Achievment::class);
+    public function achievement(){
+        return $this->hasMany(Achievement::class);
     }
 
     public function roles(){
-        return $this->belongsToMany(Role::class, 'user_role');
+        return $this->belongsToMany(Role::class, 'user_roles');
     }
 
     public function hasRole($role)

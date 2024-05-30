@@ -15,6 +15,15 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminSeeder::class,
             RoleSeeder::class,
+            UserSeeder::class,
+            InformationSeeder::class,
+            VicePresidentCandidateSeeder::class,
+            PresidentCandidateSeeder::class,
+            ExperienceSeeder::class,
+            AchievementSeeder::class,
+            ElectionSeeder::class,
+            CandidateSeeder::class,
+            VoteSeeder::class,
         ]);
     }
 }

@@ -16,12 +16,14 @@ class InformationFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+    protected $model = Information::class;
+
+    public function definition()
     {
         return [
-            'admin_id' => User::factory(),
-            'title' => $this->faker->sentence(),
-            'content' => $this->faker->paragraph(),
+            'user_id' => User::factory(),
+            'title' => $this->faker->sentence,
+            'content' => $this->faker->paragraphs(3, true),
             'publish_date' => $this->faker->date(),
         ];
     }

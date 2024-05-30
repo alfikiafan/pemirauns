@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Role;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Role>
@@ -14,10 +15,12 @@ class RoleFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
+    protected $model = Role::class;
+
+    public function definition()
     {
         return [
-            //
+            'name' => $this->faker->randomElement(['superadmin', 'admin_univ', 'admin_fakultas']),
         ];
     }
 }
