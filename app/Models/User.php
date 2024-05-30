@@ -11,7 +11,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'nim', 'faculty', 'status', 'student_card', 'photo', 'batch'
+        'name', 'email', 'password', 'nim', 'faculty', 'status', 'student_card', 'user_photo', 'batch'
     ];
 
     protected $hidden = [
@@ -46,8 +46,12 @@ class User extends Authenticatable
     }
 
     public function roles(){
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Role::class, 'user_role');
     }
 
+    public function hasRole($role)
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
 
 }

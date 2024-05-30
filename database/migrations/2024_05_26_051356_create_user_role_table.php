@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();;
             $table->foreignId('role_id')->constrained();;
-            $table->string('faculty');
+            $table->enum('faculty', [
+                'FMIPA', 'FATISDA', 'FEB', 'FISIP', 'FT', 'FSRD', 'FK', 'FH', 'FKIP', 'FIB', 'FP', 'Psikologi', 'FKO'
+            ])->nullable();
             $table->timestamps();
         });
     }

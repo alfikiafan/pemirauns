@@ -9,11 +9,10 @@ class Role extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-    ];
+    protected $fillable = ['name'];
 
-    public function users(){
-        return $this->belongsToMany(User::class);
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_role')->withPivot('faculty');
     }
 }

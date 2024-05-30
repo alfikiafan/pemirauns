@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('auth.layout')
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid" style="margin-top: 350px;">
     <div class="container d-flex justify-content-center align-items-center">
         <div class="col-md-6">
             <div class="card shadow">
@@ -54,6 +54,43 @@
                             <label for="password-confirm">{{ __('Confirm Password') }}</label>
                             <input id="password-confirm" type="password" class="form-control"
                                 name="password_confirmation" required autocomplete="new-password">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="batch">{{ __('Batch') }}</label>
+                            <input id="batch" type="number"
+                                class="mb-2 form-control{{ $errors->has('batch') ? ' is-invalid' : '' }}" name="batch"
+                                value="{{ old('batch') }}" required autocomplete="batch">
+                            @error('batch')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="faculty">{{ __('Faculty') }}</label>
+                            <select id="faculty"
+                                class="mb-2 form-control{{ $errors->has('faculty') ? ' is-invalid' : '' }}"
+                                name="faculty" required>
+                                <option value="" disabled selected>Select Faculty</option>
+                                <option value="FMIPA" {{ old('faculty') == 'FMIPA' ? 'selected' : '' }}>FMIPA</option>
+                                <option value="FATISDA" {{ old('faculty') == 'FATISDA' ? 'selected' : '' }}>FATISDA
+                                </option>
+                                <option value="FEB" {{ old('faculty') == 'FEB' ? 'selected' : '' }}>FEB</option>
+                                <option value="FISIP" {{ old('faculty') == 'FISIP' ? 'selected' : '' }}>FISIP</option>
+                                <option value="FT" {{ old('faculty') == 'FT' ? 'selected' : '' }}>FT</option>
+                                <option value="FSRD" {{ old('faculty') == 'FSRD' ? 'selected' : '' }}>FSRD</option>
+                                <option value="FK" {{ old('faculty') == 'FK' ? 'selected' : '' }}>FK</option>
+                                <option value="FH" {{ old('faculty') == 'FH' ? 'selected' : '' }}>FH</option>
+                                <option value="FKIP" {{ old('faculty') == 'FKIP' ? 'selected' : '' }}>FKIP</option>
+                                <option value="FIB" {{ old('faculty') == 'FIB' ? 'selected' : '' }}>FIB</option>
+                                <option value="FP" {{ old('faculty') == 'FP' ? 'selected' : '' }}>Fp</option>
+                                <option value="Psikologi" {{ old('faculty') == 'Psikologi' ? 'selected' : '' }}>
+                                    Psikologi</option>
+                                <option value="FKO" {{ old('faculty') == 'FKO' ? 'selected' : '' }}>FKO</option>
+                            </select>
+                            @error('faculty')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="form-group">

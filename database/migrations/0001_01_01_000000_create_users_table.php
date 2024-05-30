@@ -18,10 +18,13 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('student_card')->nullable();
-            $table->string('photo')->nullable();
-            $table->string('status')->nullable();
+            $table->string('user_photo')->nullable();
+            $table->enum('vote_status', ['available','voted'])->default('available')->nullable();
             $table->integer('batch');
-            $table->string('faculty');
+            $table->enum('faculty', [
+                'FMIPA', 'FATISDA', 'FEB', 'FISIP', 'FT', 'FSRD', 'FK', 'FH', 'FKIP', 'FIB', 'FP', 'Psikologi', 'FKO'
+            ]);
+            $table->string('user_status')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

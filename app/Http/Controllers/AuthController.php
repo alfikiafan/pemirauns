@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class AuthController extends Controller
@@ -23,30 +25,18 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
-            if ($user->role === 'admin' || $user->role === 'candidate') {
-                return redirect()->intended('/dashboard');
+            $roles = $user->roles->pluck('name')->toArray();
+
+            if (in_array('superadmin', $roles) || in_array('admin_univ', $roles) || in_array('admin_fakultas', $roles)) {
+                return redirect()->route('admin.dashboard');
             }
 
-            if ($user->role === 'voter') {
-                if ($user->user_status === 'approved') {
-                    return redirect()->intended('/dashboard');
-                } elseif ($user->user_status === 'rejected') {
-                    Auth::logout();
-                    return redirect()->back()->withInput()->withErrors(['email' => 'Your account has been rejected. Please contact support for more information.']);
-                } elseif (is_null($user->user_status)) {
-                    Auth::logout();
-                    return redirect()->back()->withInput()->withErrors(['email' => 'Your account is still under validation. Please wait for the approval.']);
-                } else {
-                    Auth::logout();
-                    return redirect()->back()->withInput()->withErrors(['email' => 'Your account status does not allow you to log in.']);
-                }
-            }
-
-            Auth::logout();
-            return redirect()->back()->withInput()->withErrors(['email' => 'Invalid user role.']);
-        } else {
-            return redirect()->back()->withInput()->withErrors(['email' => 'Invalid email or password']);
+            return redirect()->route('user.dashboard');
         }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
     }
 
     public function showRegistrationForm()
@@ -56,18 +46,24 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'nim' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255'],
+            'nim' => ['required', 'string', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'batch' => ['required', 'integer'],
+            'faculty' => ['required', 'string', 'max:255'],
             'student_card' => 'required|image|max:2048',
             'user_photo_data' => 'required',
         ]);
-    
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
         $studentCardsPath = public_path('images/student_cards');
         $userPhotosPath = public_path('images/user_photos');
-    
+        
         if (!File::exists($studentCardsPath)) {
             File::makeDirectory($studentCardsPath, 0755, true);
         }
@@ -87,27 +83,26 @@ class AuthController extends Controller
         $userPhotoFullPath = $userPhotosPath . '/' . $userPhotoFilename;
         File::put($userPhotoFullPath, $userPhoto);
         $userPhotoPath = 'images/user_photos/' . $userPhotoFilename;
-    
+
         $user = User::create([
-            'name' => $request->input('name'),
-            'nim' => $request->input('nim'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
+            'name' => $request->name,
+            'nim' => $request->nim,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'batch' => $request->batch,
+            'faculty' => $request->faculty,
             'student_card' => $studentCardPath,
             'user_photo' => $userPhotoPath,
         ]);
-    
-        return redirect('/');
-    } 
-    
+
+        Auth::login($user);
+
+        return redirect()->route('login');
+    }
 
     public function logout()
     {
         Auth::logout();
-        return redirect('/');
-    }
-    public function dashboard()
-    {
-        return view('dashboard');
+        return redirect()->route('login');
     }
 }
