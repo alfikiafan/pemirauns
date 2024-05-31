@@ -14,11 +14,13 @@ class PresidentCandidate extends Model
         'biography'
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function candidates(){
+    public function candidates()
+    {
         return $this->hasMany(Candidate::class);
     }
 }

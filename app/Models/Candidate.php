@@ -18,18 +18,23 @@ class Candidate extends Model
         'mission'
     ];
 
-    public function votes(){
+    public function votes()
+    {
         return $this->hasMany(Vote::class);
     }
 
-    public function presidentCandidate(){
-        return $this->belongsTo(PresidentCandidate::class);
-    }
-    public function vicePresidentCandidate(){
-        return $this->belongsTo(VicePresidentCandidate::class);
+    public function presidentCandidate()
+    {
+        return $this->belongsTo(User::class, 'president_candidate_id');
     }
 
-    public function election(){
-        return $this->belongsTo(Election::class);
+    public function vicePresidentCandidate()
+    {
+        return $this->belongsTo(User::class, 'vice_president_candidate_id');
+    }
+
+    public function election()
+    {
+        return $this->belongsTo(Election::class, 'election_id');
     }
 }

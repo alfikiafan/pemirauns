@@ -22,30 +22,38 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function votes(){
+    public function votes()
+    {
         return $this->hasMany(Vote::class);
     }
 
-    public function vicePresidentCandidates(){
+    public function vicePresidentCandidates()
+    {
         return $this->hasMany(VicePresidentCandidate::class);
     }
 
-    public function presidentCandidates(){
+    public function presidentCandidates()
+    {
         return $this->hasMany(PresidentCandidate::class);
     }
 
-    public function information(){
+    public function information()
+    {
         return $this->hasMany(Information::class);
     }
 
-    public function experiences(){
+    public function experiences()
+    {
         return $this->hasMany(Experience::class);
     }
-    public function achievement(){
+
+    public function achievement()
+    {
         return $this->hasMany(Achievement::class);
     }
 
-    public function roles(){
+    public function roles()
+    {
         return $this->belongsToMany(Role::class, 'user_roles');
     }
 
@@ -53,5 +61,4 @@ class User extends Authenticatable
     {
         return $this->roles()->where('name', $role)->exists();
     }
-
 }

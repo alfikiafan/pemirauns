@@ -16,11 +16,13 @@ class Vote extends Model
         'photo'
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function candidate(){
-        return $this->belongsTo(Candidate::class);
+    public function candidate()
+    {
+        return $this->belongsTo(Candidate::class, 'candidate_id');
     }
 }

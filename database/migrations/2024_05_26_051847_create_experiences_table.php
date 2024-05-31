@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();;
+            $table->foreignId('user_id')->constrained();
             $table->text('description');
             $table->string('range');
             $table->string('position');

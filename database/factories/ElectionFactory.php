@@ -22,7 +22,7 @@ class ElectionFactory extends Factory
         return [
             'name' => $this->faker->sentence,
             'faculty' => $this->faker->randomElement(['FMIPA', 'FATISDA', 'FEB', 'FISIP', 'FT', 'FSRD', 'FK', 'FH', 'FKIP', 'FIB', 'FP', 'Psikologi', 'FKO']),
-            'description' => $this->faker->paragraph,
+            'description' => $this->faker->sentence,
             'start_date' => $this->faker->date(),
             'end_date' => $this->faker->date(),
         ];

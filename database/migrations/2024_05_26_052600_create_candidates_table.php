@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('candidates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('president_candidate_id')->constrained();;
-            $table->foreignId('vice_president_candidate_id')->constrained();;
-            $table->foreignId('election_id')->constrained();;
+            $table->foreignId('president_candidate_id')->constrained();
+            $table->foreignId('vice_president_candidate_id')->constrained();
+            $table->foreignId('election_id')->constrained();
             $table->string('video');
             $table->string('vision');
             $table->string('mission');

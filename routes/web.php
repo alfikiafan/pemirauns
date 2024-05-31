@@ -9,6 +9,7 @@ use App\Http\Controllers\ElectionController;
 use App\Http\Controllers\AdminUnivController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminFakultasController;
+use App\Http\Controllers\CandidateController;
 
 // Route::get('/', function () {
 //     return view('landing-page.landing');
@@ -47,3 +48,10 @@ Route::post('/update-status', [VoterController::class, 'updateAccountStatus'])->
 Route::get('/admin/manage-election', [ElectionController::class, 'index'])->name('admin.manage_election');
 Route::post('/admin/manage-election',[ElectionController::class, 'create'])->name('admin.manage_create-election');
 Route::delete('/admin/manage-election/{id}', [ElectionController::class, 'delete'])->name('admin.manage_delete-election');
+
+Route::get('/admin/candidate', [CandidateController::class, 'index'])->name('admin.candidates.index');
+Route::get('/admin/candidate/create', [CandidateController::class, 'create'])->name('admin.candidates.create');
+Route::post('/admin/candidate', [CandidateController::class, 'store'])->name('admin.candidates.store');
+Route::get('/admin/candidate/{id}/edit', [CandidateController::class, 'edit'])->name('admin.candidates.edit');
+Route::put('/admin/candidate/{candidate}', [CandidateController::class, 'update'])->name('admin.candidates.update');
+Route::delete('/admin/candidate/{candidate}', [CandidateController::class, 'destroy'])->name('admin.candidates.destroy');
