@@ -25,12 +25,12 @@ class Candidate extends Model
 
     public function presidentCandidate()
     {
-        return $this->belongsTo(User::class, 'president_candidate_id');
+        return $this->belongsTo(PresidentCandidate::class, 'president_candidate_id');
     }
 
     public function vicePresidentCandidate()
     {
-        return $this->belongsTo(User::class, 'vice_president_candidate_id');
+        return $this->belongsTo(VicePresidentCandidate::class, 'vice_president_candidate_id');
     }
 
     public function election()

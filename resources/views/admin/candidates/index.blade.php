@@ -1,6 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@elseif (session('success'))
+    <div class="alert alert-success" id="success-message">
+        {{ session('success') }}
+    </div>
+@endif
 
 <div class="card mx-3 mb-4">
   <div class="card-header pb-0">
@@ -33,10 +46,10 @@
               <p class="text-xs font-weight-bold mb-0 ps-3">{{ $candidate->id }}</p>
             </td>
             <td>
-              <h6 class="mb-0 text-sm">{{ $candidate->presidentCandidate->name }}</h6>
+              <h6 class="mb-0 text-sm">{{ $candidate->presidentCandidate->user->name ?? 'N/A' }}</h6>
             </td>
             <td>
-              <h6 class="mb-0 text-sm">{{ $candidate->vicePresidentCandidate->name }}</h6>
+              <h6 class="mb-0 text-sm">{{ $candidate->vicePresidentCandidate->user->name ?? 'N/A' }}</h6>
             </td>
             <td>
               <p class="text-xs font-weight-bold mb-0">{{ $candidate->election->name }}</p>
