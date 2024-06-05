@@ -7,9 +7,11 @@ use App\Http\Controllers\VoterController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ElectionController;
 use App\Http\Controllers\AdminUnivController;
+use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminFacultyController;
-use App\Http\Controllers\CandidateController;
+use App\Http\Controllers\PresidentCandidateController;
+use App\Http\Controllers\VicePresidentCandidateController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
@@ -40,6 +42,9 @@ Route::post('/admin/candidate', [CandidateController::class, 'store'])->name('ad
 Route::get('/admin/candidate/{id}/edit', [CandidateController::class, 'edit'])->name('admin.candidates.edit');
 Route::put('/admin/candidate/{candidate}', [CandidateController::class, 'update'])->name('admin.candidates.update');
 Route::delete('/admin/candidate/{candidate}', [CandidateController::class, 'destroy'])->name('admin.candidates.destroy');
+
+Route::resource('/admin/president-candidate', PresidentCandidateController::class);
+Route::resource('/admin/vice-president-candidate', VicePresidentCandidateController::class);
 
 Route::middleware('auth')->group(function () {
     Route::get('/admin/manage_admin_fakultas', [AdminFacultyController::class, 'index'])->name('admin.admin_faculty.index');
