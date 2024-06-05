@@ -32,7 +32,6 @@
       <table class="table align-items-center mb-0">
         <thead>
           <tr>
-            <th class="text-secondary text-xxs font-weight-bolder pe-3">ID</th>
             <th class="text-secondary text-xxs font-weight-bolder px-2">President Candidate</th>
             <th class="text-secondary text-xxs font-weight-bolder px-2">Vice President Candidate</th>
             <th class="text-secondary text-xxs font-weight-bolder px-2">Election</th>
@@ -42,9 +41,6 @@
         <tbody>
           @foreach ($candidates as $candidate)
           <tr>
-            <td>
-              <p class="text-xs font-weight-bold mb-0 ps-3">{{ $candidate->id }}</p>
-            </td>
             <td>
               <h6 class="mb-0 text-sm">{{ $candidate->presidentCandidate->user->name ?? 'N/A' }}</h6>
             </td>
