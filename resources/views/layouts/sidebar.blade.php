@@ -25,7 +25,8 @@
                             class="fas fa-lg fa-home ps-2 pe-2 text-center text-dark {{ Request::is('admin.dashboard') ? 'text-white' : 'text-dark' }}"
                             aria-hidden="true"></i>
                     </div>
-                    <span class="nav-link-text ms-1 {{ Request::is('admin.dashboard') ? 'text-dark' : 'text-white' }}">Home</span>
+                    <span
+                        class="nav-link-text ms-1 {{ Request::is('admin.dashboard') ? 'text-dark' : 'text-white' }}">Home</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -38,7 +39,8 @@
                             aria-hidden="true"></i>
                     </div>
                     <span
-                        class="nav-link-text ms-1 {{ Request::is('admin.manage_admin_univ') ? 'text-dark' : 'text-white' }}">Manage Admin Univ</span>
+                        class="nav-link-text ms-1 {{ Request::is('admin.manage_admin_univ') ? 'text-dark' : 'text-white' }}">Manage
+                        Admin Univ</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -51,20 +53,22 @@
                             aria-hidden="true"></i>
                     </div>
                     <span
-                        class="nav-link-text ms-1 {{ Request::is('admin.manage_admin_fakultas') ? 'text-dark' : 'text-white' }}">Manage Admin Fakultas</span>
+                        class="nav-link-text ms-1 {{ Request::is('admin.manage_admin_fakultas') ? 'text-dark' : 'text-white' }}">Manage
+                        Admin Fakultas</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ (Request::is('admin.manage_user') ? 'active' : '') }}"
-                    href="{{ route('admin.manage_user') }}">
+                    href="{{ route('admin.users.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
-                            class="fas fa-lg fa-users ps-2 pe-2 text-center text-dark {{ Request::is('admin.manage_user') ? 'text-white' : 'text-dark' }}"
+                            class="fas fa-lg fa-users ps-2 pe-2 text-center text-dark {{ Request::is('admin.users.index') ? 'text-white' : 'text-dark' }}"
                             aria-hidden="true"></i>
                     </div>
                     <span
-                        class="nav-link-text ms-1 {{ Request::is('admin.manage_user') ? 'text-dark' : 'text-white' }}">Voter Management</span>
+                        class="nav-link-text ms-1 {{ Request::is('admin.users.index') ? 'text-dark' : 'text-white' }}">Voter
+                        Management</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -80,13 +84,14 @@
                         class="nav-link-text ms-1 {{ Request::is('admin.candidates.index') ? 'text-dark' : 'text-white' }}">Candidate</span>
                 </a>
             </li>
-            <li class="nav-item pb-2">
+            <li class="nav-item mt-3">
                 <a class="nav-link {{ (Request::is('admin.manage-election') ? 'active' : '') }}"
                     href="{{ route('admin.manage_election') }}">
-                    <span class="nav-link-text ms-1">Election Management</span>
+                    <span class="nav-link-text ms-1 text-uppercase text-xs font-weight-bolder text-white">Election
+                        Management</span>
             <li class="nav-item">
-                <a class="nav-link {{ (Request::is('admin.manage-election') ? 'active' : '') }}" 
-                href="{{ route('admin.manage_election') }}">
+                <a class="nav-link {{ (Request::is('admin.manage-election') ? 'active' : '') }}"
+                    href="{{ route('admin.manage_election') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
@@ -94,7 +99,8 @@
                             aria-hidden="true"></i>
                     </div>
                     <span
-                        class="nav-link-text ms-1 {{ Request::is('admin.manage-election') ? 'text-dark' : 'text-white' }}">Election Management</span>
+                        class="nav-link-text ms-1 {{ Request::is('admin.manage-election') ? 'text-dark' : 'text-white' }}">Election
+                        Management</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -105,15 +111,15 @@
                             class="fas fa-lg fa-info-circle ps-2 pe-2 text-center text-dark {{ Request::is('#') ? 'text-white' : 'text-dark' }}"
                             aria-hidden="true"></i>
                     </div>
-                    <span
-                        class="nav-link-text ms-1 {{ Request::is('#') ? 'text-dark' : 'text-white' }}">Information Management</span>
+                    <span class="nav-link-text ms-1 {{ Request::is('#') ? 'text-dark' : 'text-white' }}">Information
+                        Management</span>
                 </a>
             </li>
             @endif
 
-            @if (Auth::check() && Auth::user()->hasRole('admin_univ'))
+            @if (Auth::check() && (Auth::user()->hasRole('admin_univ') || Auth::user()->hasRole('admin_fakultas')))
             <li class="nav-item mt-2">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder text-white">Admin Univ</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder text-white">Admin Pemira</h6>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ (Request::is('admin.dashboard') ? 'active' : '') }}"
@@ -124,20 +130,22 @@
                             class="fas fa-lg fa-home ps-2 pe-2 text-center text-dark {{ Request::is('admin.dashboard') ? 'text-white' : 'text-dark' }}"
                             aria-hidden="true"></i>
                     </div>
-                    <span class="nav-link-text ms-1 {{ Request::is('admin.dashboard') ? 'text-dark' : 'text-white' }}">Home</span>
+                    <span
+                        class="nav-link-text ms-1 {{ Request::is('admin.dashboard') ? 'text-dark' : 'text-white' }}">Home</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ (Request::is('admin.manage_user') ? 'active' : '') }}"
-                    href="{{ route('admin.manage_user') }}">
+                <a class="nav-link {{ (Request::is('admin.users.index') ? 'active' : '') }}"
+                    href="{{ route('admin.users.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
-                            class="fas fa-lg fa-users ps-2 pe-2 text-center text-dark {{ Request::is('admin.manage_user') ? 'text-white' : 'text-dark' }}"
+                            class="fas fa-lg fa-users ps-2 pe-2 text-center text-dark {{ Request::is('admin.users.index') ? 'text-white' : 'text-dark' }}"
                             aria-hidden="true"></i>
                     </div>
                     <span
-                        class="nav-link-text ms-1 {{ Request::is('admin.manage_user') ? 'text-dark' : 'text-white' }}">Voter Management</span>
+                        class="nav-link-text ms-1 {{ Request::is('admin.users.index') ? 'text-dark' : 'text-white' }}">Voter
+                        Management</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -154,8 +162,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ (Request::is('admin.manage-election') ? 'active' : '') }}" 
-                href="{{ route('admin.manage_election') }}">
+                <a class="nav-link {{ (Request::is('admin.manage-election') ? 'active' : '') }}"
+                    href="{{ route('admin.manage_election') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
@@ -163,7 +171,20 @@
                             aria-hidden="true"></i>
                     </div>
                     <span
-                        class="nav-link-text ms-1 {{ Request::is('admin.manage-election') ? 'text-dark' : 'text-white' }}">Election Management</span>
+                        class="nav-link-text ms-1 {{ Request::is('admin.manage-election') ? 'text-dark' : 'text-white' }}">Election
+                        Management</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ (Request::is('#') ? 'active' : '') }}" href="#">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1rem;"
+                            class="fas fa-lg fa-info-circle ps-2 pe-2 text-center text-dark {{ Request::is('#') ? 'text-white' : 'text-dark' }}"
+                            aria-hidden="true"></i>
+                    </div>
+                    <span class="nav-link-text ms-1 {{ Request::is('#') ? 'text-dark' : 'text-white' }}">Information
+                        Management</span>
                 </a>
             </li>
             @endif

@@ -42,7 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/remove-admin-fakultas/{userId}', [AdminFakultasController::class, 'removeAdminFakultas'])->name('remove.admin.fakultas');
 });
 
-Route::get('/admin/manage-user', [VoterController::class, 'index'])->name('admin.manage_user');
+Route::get('/admin/manage-user', [VoterController::class, 'index'])->name('admin.users.index');
 Route::post('/update-status', [VoterController::class, 'updateAccountStatus'])->name('admin.updateAccountStatus');
 
 Route::get('/admin/manage-election', [ElectionController::class, 'index'])->name('admin.manage_election');
