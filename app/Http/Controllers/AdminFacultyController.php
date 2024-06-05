@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Role;
 
-class AdminfacultyController extends Controller
+class AdminFacultyController extends Controller
 {
     public function index()
     {
@@ -16,34 +16,45 @@ class AdminfacultyController extends Controller
 
         $usersWithoutRole = User::whereDoesntHave('roles')->get();
 
+        return view('admin.admin_faculty.index', compact('adminFakuls', 'usersWithoutRole'));
+    }
+
+    public function create()
+    {
         $faculties = [
             'FMIPA', 'FATISDA', 'FEB', 'FISIP', 'FT', 'FSRD', 'FK', 'FH', 'FKIP', 'FIB', 'FP', 'Psikologi', 'FKO'
         ];
 
-        return view('admin.admin_faculty.index', compact('adminFakuls', 'usersWithoutRole', 'faculties'));
+        $usersWithoutRole = User::whereDoesntHave('roles')->get();
+
+        return view('admin.admin_faculty.create', compact('faculties', 'usersWithoutRole'));
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
+        $currentUser = Auth::user();
+        if (!$currentUser->hasRole('superadmin')) {
+            return back()->withErrors(['Unauthorized action.']);
+        }
+
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'faculty' => 'required|in:FMIPA,FATISDA,FEB,FISIP,FT,FSRD,FK,FH,FKIP,FIB,FP,Psikologi,FKO',
         ]);
-    
+
         $user = User::find($request->user_id);
         $role = Role::where('name', 'admin_fakultas')->first();
-    
+
         if ($user->hasRole('admin_fakultas')) {
             return back()->withErrors(['User is already an admin_fakultas']);
         }
-    
-        $user->roles()->attach($role->id, ['faculty' => $request->faculty]);
-    
-        return view('admin.admin_faculty.create', compact('users', 'user_role'))->with('success', 'User promoted to admin_fakultas');
-    }
-    
 
-    public function remove($userId)
+        $user->roles()->attach($role->id, ['faculty' => $request->faculty]);
+
+        return redirect()->route('admin.admin_faculty.index')->with('success', 'User promoted to admin_fakultas');
+    }
+
+    public function removeAdminFakultas(Request $request, $userId)
     {
         $currentUser = Auth::user();
         if (!$currentUser->hasRole('superadmin')) {

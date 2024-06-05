@@ -21,8 +21,8 @@
     <div class="card-header pb-0">
         <div class="d-flex align-items-center justify-content-between">
             <div>
-                <h6 class="m-0">Manage Pemilih</h6>
-                <p class="text-sm">Monitoring Pemilih</p>
+                <h6 class="m-0">Voter Monitoring</h6>
+                <p class="text-sm">See all voter in your unit</p>
             </div>
             <div>
                 <form action="{{ route('admin.users.index') }}" method="GET">
@@ -41,8 +41,8 @@
             <table class="table align-items-center mb-0">
                 <thead>
                     <tr>
-                        <th class="text-secondary text-xxs font-weight-bolder px-2">Nama</th>
                         <th class="text-secondary text-xxs font-weight-bolder px-2">NIM</th>
+                        <th class="text-secondary text-xxs font-weight-bolder px-2">Nama</th>
                         <th class="text-secondary text-xxs font-weight-bolder px-2">Fakultas</th>
                         <th class="text-secondary text-xxs font-weight-bolder px-2">Angkatan</th>
                         <th class="text-secondary text-xxs font-weight-bolder px-2">Status Pemilihan</th>
@@ -55,10 +55,10 @@
                     @foreach ($users as $voter)
                     <tr>
                         <td>
-                            <p class="text-xs font-weight-bold mb-0">{{ $voter->name }}</p>
+                            <p class="text-xs font-weight-bold mb-0">{{ $voter->nim }}</p>
                         </td>
                         <td>
-                            <p class="text-xs font-weight-bold mb-0">{{ $voter->nim }}</p>
+                            <p class="text-xs font-weight-bold mb-0">{{ $voter->name }}</p>
                         </td>
                         <td>
                             <p class="text-xs font-weight-bold mb-0">{{ $voter->faculty }}</p>

@@ -30,30 +30,30 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ (Request::is('admin.manage_admin_univ') ? 'active' : '') }}"
-                    href="{{ route('admin.manage_admin_univ') }}">
+                <a class="nav-link {{ (Request::is('admin.admin_univ.index') ? 'active' : '') }}"
+                    href="{{ route('admin.admin_univ.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
-                            class="fas fa-lg fa-user-cog ps-2 pe-2 text-center text-dark {{ Request::is('admin.manage_admin_univ') ? 'text-white' : 'text-dark' }}"
+                            class="fas fa-lg fa-user-cog ps-2 pe-2 text-center text-dark {{ Request::is('admin.admin_univ.index') ? 'text-white' : 'text-dark' }}"
                             aria-hidden="true"></i>
                     </div>
                     <span
-                        class="nav-link-text ms-1 {{ Request::is('admin.manage_admin_univ') ? 'text-dark' : 'text-white' }}">Manage
+                        class="nav-link-text ms-1 {{ Request::is('admin.admin_univ.index') ? 'text-dark' : 'text-white' }}">Manage
                         Admin Univ</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ (Request::is('admin.manage_admin_fakultas') ? 'active' : '') }}"
-                    href="{{ route('admin.manage_admin_fakultas') }}">
+                <a class="nav-link {{ (Request::is('admin.admin_faculty.index') ? 'active' : '') }}"
+                    href="{{ route('admin.admin_faculty.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
-                            class="fas fa-lg fa-user-cog ps-2 pe-2 text-center text-dark {{ Request::is('admin.manage_admin_fakultas') ? 'text-white' : 'text-dark' }}"
+                            class="fas fa-lg fa-user-cog ps-2 pe-2 text-center text-dark {{ Request::is('admin.admin_faculty.index') ? 'text-white' : 'text-dark' }}"
                             aria-hidden="true"></i>
                     </div>
                     <span
-                        class="nav-link-text ms-1 {{ Request::is('admin.manage_admin_fakultas') ? 'text-dark' : 'text-white' }}">Manage
+                        class="nav-link-text ms-1 {{ Request::is('admin.admin_faculty.index') ? 'text-dark' : 'text-white' }}">Manage
                         Admin Fakultas</span>
                 </a>
             </li>

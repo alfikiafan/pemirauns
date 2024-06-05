@@ -22,8 +22,12 @@
     <div class="card-header pb-0">
         <div class="d-flex align-items-center justify-content-between">
             <div>
-                <h6 class="m-0">Admin Faculty Table</h6>
+                <h6 class="m-0">Current Faculty Admin</h6>
                 <p class="text-sm">See all admin in your unit</p>
+            </div>
+            <div class="ml-auto p-0">
+                <a href="{{ route('admin.admin_faculty.create') }}" class="btn bg-gradient-primary">Add Faculty
+                    Admin</a>
             </div>
         </div>
     </div>
@@ -57,7 +61,8 @@
                         </td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <form action="{{ route('remove.admin.fakultas', $adminFakultas->id) }}" method="POST"
+                                <form action="{{ route('admin.admin_faculty.remove', $adminFakultas->id) }}"
+                                    method="POST"
                                     onsubmit="return confirm('Are you sure you want to remove this admin_fakultas?');">
                                     @csrf
                                     <button type="submit" class="btn btn-action btn-danger mb-0 ms-1"
@@ -72,40 +77,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
-
-<div class="card mx-3 mb-3">
-    <div class="card-header pb-3">
-        <p class="m-0">Add New Faculty Admin</p>
-    </div>
-    <div class="card-body pt-0">
-        <form action="{{ route('add.admin.fakultas') }}" method="POST">
-            @csrf
-            <div class="mb-3">
-                <label for="user_id" class="form-label">Select User:</label>
-                <select id="user_id" name="user_id" class="form-select" required>
-                    @foreach ($usersWithoutRole as $user)
-                    <option value="{{ $user->id }}">{{ $user->nim }} - {{ $user->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="faculty" class="form-label">Select Faculty:</label>
-                <select id="faculty" name="faculty" class="form-select" required>
-                    @foreach ($faculties as $faculty)
-                    <option value="{{ $faculty }}">{{ $faculty }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="row mt-3">
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </div>
-            </div>
-        </form>
     </div>
 </div>
 @endsection
