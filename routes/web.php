@@ -45,9 +45,11 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/admin/manage-user', [VoterController::class, 'index'])->name('admin.manage_user');
 Route::post('/update-status', [VoterController::class, 'updateAccountStatus'])->name('admin.updateAccountStatus');
 
-Route::get('/admin/manage-election', [ElectionController::class, 'index'])->name('admin.manage_election');
-Route::post('/admin/manage-election',[ElectionController::class, 'create'])->name('admin.manage_create-election');
-Route::delete('/admin/manage-election/{id}', [ElectionController::class, 'delete'])->name('admin.manage_delete-election');
+Route::get('/admin/manage-election', [ElectionController::class, 'index'])->name('admin.election');
+Route::post('/admin/manage-election',[ElectionController::class, 'create'])->name('admin.election.create');
+Route::get('/admin/manage-election/{id}', [ElectionController::class, 'view'])->name('admin.election.view');
+Route::put('/admin/manage-election/{id}', [ElectionController::class, 'update'])->name('admin.election.update');
+Route::delete('/admin/manage-election/{id}', [ElectionController::class, 'delete'])->name('admin.election.delete');
 
 Route::get('/admin/candidate', [CandidateController::class, 'index'])->name('admin.candidates.index');
 Route::get('/admin/candidate/create', [CandidateController::class, 'create'])->name('admin.candidates.create');
