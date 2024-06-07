@@ -87,6 +87,7 @@
 
     <!-- ======= Main Section ======= -->
     <main id="hero" class="hero d-flex align-items-center">
+        <!-- Added margin-top to ensure content is below the fixed navbar -->
         <div class="container">
             <div class="row">
                 <div class="page-wrapper mt-5">

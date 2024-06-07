@@ -8,15 +8,22 @@ use App\Models\Role;
 
 class VoterController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::where('name', 'superadmin')->first()->id;
-        $users = User::whereDoesntHave('roles', function($query) use ($roles) {
-            $query->where('role_id', $roles);
-        })->get();
+        $superadminRoleId = Role::where('name', 'superadmin')->first()->id;
 
-        return view('admin.manage_user', compact('users'));
+        $query = User::whereDoesntHave('roles', function($query) use ($superadminRoleId) {
+            $query->where('role_id', $superadminRoleId);
+        });
+
+        $filter = $request->input('filter');
+        $query->when($filter == 'not_approved', function ($query) {
+            $query->where('user_status', '!=', 'approved')->orWhereNull('user_status');
+        });
+        $users = $query->paginate(10);
+        return view('admin.users.index', compact('users', 'filter'));
     }
+    
 
     public function updateAccountStatus(Request $request)
     {
@@ -30,12 +37,12 @@ class VoterController extends Controller
         if ($request->user_status == 'rejected') {
             $user->delete();
     
-            return redirect()->route('admin.manage_user')->with('success', 'User account has been rejected and deleted successfully.');
+            return redirect()->route('admin.users.index')->with('success', 'User account has been rejected and deleted successfully.');
         } else {
             $user->user_status = $request->user_status; 
             $user->save();
     
-            return redirect()->route('admin.manage_user')->with('success', 'User status updated successfully.');
+            return redirect()->route('admin.users.index')->with('success', 'User status updated successfully.');
         }
 
     }

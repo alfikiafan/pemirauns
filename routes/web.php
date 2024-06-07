@@ -7,13 +7,12 @@ use App\Http\Controllers\VoterController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ElectionController;
 use App\Http\Controllers\AdminUnivController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\AdminFakultasController;
 use App\Http\Controllers\CandidateController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminFacultyController;
+use App\Http\Controllers\PresidentCandidateController;
+use App\Http\Controllers\VicePresidentCandidateController;
 
-// Route::get('/', function () {
-//     return view('landing-page.landing');
-// })->name('landing');
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -30,19 +29,7 @@ Route::get('/user/dashboard', function () {
     return view('user.dashboard');
 })->name('user.dashboard');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/manage-admin-univ', [AdminUnivController::class, 'manageAdminUniv'])->name('admin.manage_admin_univ');
-    Route::post('/add-admin-univ', [AdminUnivController::class, 'addAdminUniv'])->name('add.admin.univ');
-    Route::post('/remove-admin-univ/{userId}', [AdminUnivController::class, 'removeAdminUniv'])->name('remove.admin.univ');
-});
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/manage-admin-fakultas', [AdminFakultasController::class, 'manageAdminFakultas'])->name('admin.manage_admin_fakultas');
-    Route::post('/add-admin-fakultas', [AdminFakultasController::class, 'addAdminFakultas'])->name('add.admin.fakultas');
-    Route::post('/remove-admin-fakultas/{userId}', [AdminFakultasController::class, 'removeAdminFakultas'])->name('remove.admin.fakultas');
-});
-
-Route::get('/admin/manage-user', [VoterController::class, 'index'])->name('admin.manage_user');
+Route::get('/admin/manage-user', [VoterController::class, 'index'])->name('admin.users.index');
 Route::post('/update-status', [VoterController::class, 'updateAccountStatus'])->name('admin.updateAccountStatus');
 
 Route::get('/admin/manage-election', [ElectionController::class, 'index'])->name('admin.election');
@@ -57,3 +44,20 @@ Route::post('/admin/candidate', [CandidateController::class, 'store'])->name('ad
 Route::get('/admin/candidate/{id}/edit', [CandidateController::class, 'edit'])->name('admin.candidates.edit');
 Route::put('/admin/candidate/{candidate}', [CandidateController::class, 'update'])->name('admin.candidates.update');
 Route::delete('/admin/candidate/{candidate}', [CandidateController::class, 'destroy'])->name('admin.candidates.destroy');
+
+Route::resource('/admin/president-candidate', PresidentCandidateController::class);
+Route::resource('/admin/vice-president-candidate', VicePresidentCandidateController::class);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/admin/manage_admin_fakultas', [AdminFacultyController::class, 'index'])->name('admin.admin_faculty.index');
+    Route::get('/admin/manage_admin_fakultas/create', [AdminFacultyController::class, 'create'])->name('admin.admin_faculty.create');
+    Route::post('/admin/manage_admin_fakultas/store', [AdminFacultyController::class, 'store'])->name('admin.admin_faculty.store');
+    Route::post('/admin/manage_admin_fakultas/remove/{userId}', [AdminFacultyController::class, 'removeAdminFakultas'])->name('admin.admin_faculty.remove');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/admin/manage_admin_univ', [AdminUnivController::class, 'index'])->name('admin.admin_univ.index');
+    Route::get('/admin/manage_admin_univ/create', [AdminUnivController::class, 'create'])->name('admin.admin_univ.create');
+    Route::post('/admin/manage_admin_univ/store', [AdminUnivController::class, 'store'])->name('admin.admin_univ.store');
+    Route::post('/admin/manage_admin_univ/remove/{userId}', [AdminUnivController::class, 'removeAdminUniv'])->name('admin.admin_univ.remove');
+});

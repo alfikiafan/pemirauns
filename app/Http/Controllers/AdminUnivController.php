@@ -9,19 +9,24 @@ use App\Models\Role;
 
 class AdminUnivController extends Controller
 {
-    public function manageAdminUniv()
+    public function index()
     {
-        // Get all admin_univ users
         $adminUnivRole = Role::where('name', 'admin_univ')->first();
         $adminUnivs = $adminUnivRole ? $adminUnivRole->users : collect();
 
-        // Get users without any role
         $usersWithoutRole = User::whereDoesntHave('roles')->get();
 
-        return view('admin.manage_admin_univ', compact('adminUnivs', 'usersWithoutRole'));
+        return view('admin.admin_univ.index', compact('adminUnivs', 'usersWithoutRole'));
     }
 
-    public function addAdminUniv(Request $request)
+    public function create()
+    {
+        $usersWithoutRole = User::whereDoesntHave('roles')->get();
+
+        return view('admin.admin_univ.create', compact('usersWithoutRole'));
+    }
+
+    public function store(Request $request)
     {
         $currentUser = Auth::user();
         if (!$currentUser->hasRole('superadmin')) {
@@ -39,9 +44,9 @@ class AdminUnivController extends Controller
             return back()->withErrors(['User is already an admin_univ']);
         }
 
-        $user->roles()->attach($role->id);
+        $user->roles()->attach($role->id, ['faculty' => 'Univ']);
 
-        return redirect()->route('admin.manage_admin_univ')->with('success', 'User promoted to admin_univ');
+        return redirect()->route('admin.admin_univ.index')->with('success', 'User promoted to admin_univ');
     }
 
     public function removeAdminUniv(Request $request, $userId)
@@ -60,6 +65,6 @@ class AdminUnivController extends Controller
 
         $user->roles()->detach($role->id);
 
-        return redirect()->route('admin.manage_admin_univ')->with('success', 'User demoted from admin_univ');
+        return redirect()->route('admin.admin_univ.index')->with('success', 'User demoted from admin_univ');
     }
 }

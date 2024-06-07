@@ -31,7 +31,14 @@ class AuthController extends Controller
                 return redirect()->route('admin.dashboard');
             }
 
-            return redirect()->route('user.dashboard');
+            if (empty($roles)) {
+                if ($user->user_status === 'approved') {
+                    return redirect()->route('user.dashboard');
+                } elseif (is_null($user->user_status)) {
+                    Auth::logout();
+                    return redirect()->back()->withInput()->withErrors(['email' => 'Your account is still under validation. Please wait for the approval.']);
+                }
+            }
         }
 
         return back()->withErrors([

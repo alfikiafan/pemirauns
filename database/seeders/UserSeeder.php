@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
             UserRole::create([
                 'user_id' => $admin->id,
                 'role_id' => $role->id,
-                'faculty' => null,
+                'faculty' => 'Univ',
             ]);
         }
 
