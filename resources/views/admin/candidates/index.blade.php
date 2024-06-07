@@ -32,26 +32,26 @@
       <table class="table align-items-center mb-0">
         <thead>
           <tr>
-            <th class="text-secondary text-xxs font-weight-bolder px-2">President Candidate</th>
+            <th class="text-secondary text-xxs font-weight-bolder pe-3">President Candidate</th>
             <th class="text-secondary text-xxs font-weight-bolder px-2">Vice President Candidate</th>
             <th class="text-secondary text-xxs font-weight-bolder px-2">Election</th>
-            <th class="text-secondary text-xxs font-weight-bolder px-2">Actions</th>
+            <th class="text-secondary text-xxs font-weight-bolder ps-3">Actions</th>
           </tr>
         </thead>
         <tbody>
           @foreach ($candidates as $candidate)
           <tr>
             <td>
-              <h6 class="mb-0 text-sm">{{ $candidate->presidentCandidate->user->name ?? 'N/A' }}</h6>
+              <p class="text-xs font-weight-bold mb-0 ps-3">{{ $candidate->presidentCandidate->user->name ?? 'N/A' }}</p>
             </td>
             <td>
-              <h6 class="mb-0 text-sm">{{ $candidate->vicePresidentCandidate->user->name ?? 'N/A' }}</h6>
+              <p class="text-xs font-weight-bold mb-0">{{ $candidate->vicePresidentCandidate->user->name ?? 'N/A' }}</p>
             </td>
             <td>
               <p class="text-xs font-weight-bold mb-0">{{ $candidate->election->name }}</p>
             </td>
             <td>
-              <div class="d-flex align-items-center">
+              <div class="d-flex align-items-center ps-3">
                 <a href="{{ route('admin.candidates.edit', $candidate) }}" class="me-2">
                   <button type="button" class="btn btn-action btn-primary mb-0 me-1" title="Edit this candidate data">
                     <i class="fas fa-pencil-alt"></i>
@@ -70,6 +70,34 @@
           @endforeach
         </tbody>
       </table>
+    </div>
+      <div class="d-flex flex-column align-items-center my-4">
+        <div class="mb-2">
+            <p class="mb-0 text-sm">
+            Showing {{ $candidates->firstItem() }} to {{ $candidates->lastItem() }} of {{ $candidates->total() }} results
+            </p>
+        </div>
+        <div>
+            <ul class="pagination pagination-info justify-content-center mb-0">
+            <li class="page-item{{ $candidates->onFirstPage() ? ' disabled' : '' }}">
+                <a class="page-link" href="{{ $candidates->previousPageUrl() }}" aria-label="Previous">
+                <span aria-hidden="true"><i class="fas fa-chevron-left" aria-hidden="true"></i></span>
+                </a>
+            </li>
+
+            @for ($i = 1; $i <= $candidates->lastPage(); $i++)
+                <li class="page-item{{ $candidates->currentPage() == $i ? ' active' : '' }}">
+                <a class="page-link" href="{{ $candidates->url($i) }}">{{ $i }}</a>
+                </li>
+            @endfor
+
+            <li class="page-item{{ $candidates->hasMorePages() ? '' : ' disabled' }}">
+                <a class="page-link" href="{{ $candidates->nextPageUrl() }}" aria-label="Next">
+                <span aria-hidden="true"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
+                </a>
+            </li>
+            </ul>
+        </div>
     </div>
   </div>
 </div>

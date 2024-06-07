@@ -14,7 +14,7 @@ class CandidateController extends Controller
 {
     public function index()
     {
-        $candidates = Candidate::with('presidentCandidate', 'vicePresidentCandidate', 'election')->get();
+        $candidates = Candidate::with('presidentCandidate', 'vicePresidentCandidate', 'election')->paginate(10);
         return view('admin.candidates.index', compact('candidates'));
     }
 
