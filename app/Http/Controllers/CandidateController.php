@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Election;
 use App\Models\PresidentCandidate;
 use App\Models\VicePresidentCandidate;
+use App\Models\Vote;
 
 class CandidateController extends Controller
 {
@@ -127,6 +128,12 @@ class CandidateController extends Controller
     {
         $presidentId = $candidate->president_candidate_id;
         $vicePresidentId = $candidate->vice_president_candidate_id;
+
+        $hasVotes = Vote::where('candidate_id', $candidate->id)->exists();
+
+        if ($hasVotes) {
+            return redirect()->route('admin.candidates.index')->withErrors('Kandidat sudah mengikuti pemilihan. Tidak bisa dihapus');
+        }
 
         $candidate->delete();
 
