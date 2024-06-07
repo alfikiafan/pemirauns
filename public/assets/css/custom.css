@@ -1,0 +1,11 @@
+.nav-link.active .nav-link-text {
+    color: black !important;
+}
+
+.nav-link.active .icon {
+    background-color: black !important;
+}
+
+.nav-link.active .icon i {
+    color: white !important;
+}

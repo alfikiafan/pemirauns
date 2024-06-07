@@ -53,14 +53,14 @@
             <td>
               <div class="d-flex align-items-center ps-3">
                 <a href="{{ route('admin.candidates.edit', $candidate) }}" class="me-2">
-                  <button type="button" class="btn btn-action btn-primary mb-0 me-1" title="Edit this candidate data">
+                  <button type="button" class="btn btn-sm btn-action btn-primary mb-0 me-1 px-3" title="Edit this candidate data">
                     <i class="fas fa-pencil-alt"></i>
                   </button>
                 </a>
                 <form action="{{ route('admin.candidates.destroy', $candidate) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this candidate data?');">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" class="btn btn-action mb-0 ms-1 btn-danger" title="Delete this candidate data">
+                  <button type="submit" class="btn btn-sm btn-action mb-0 ms-1 px-3 btn-danger" title="Delete this candidate data">
                     <i class="fas fa-trash"></i>
                   </button>
                 </form>

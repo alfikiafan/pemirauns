@@ -12,6 +12,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminFacultyController;
 use App\Http\Controllers\PresidentCandidateController;
 use App\Http\Controllers\VicePresidentCandidateController;
+use App\Http\Controllers\InformationController;
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
@@ -47,6 +48,15 @@ Route::delete('/admin/candidate/{candidate}', [CandidateController::class, 'dest
 
 Route::resource('/admin/president-candidate', PresidentCandidateController::class);
 Route::resource('/admin/vice-president-candidate', VicePresidentCandidateController::class);
+
+Route::resource('/admin/information', InformationController::class);
+Route::get('/admin/information', [InformationController::class, 'index'])->name('admin.information.index');
+Route::get('/admin/information/create', [InformationController::class, 'create'])->name('admin.information.create');
+Route::post('/admin/information', [InformationController::class, 'store'])->name('admin.information.store');
+Route::get('/admin/information/{information}', [InformationController::class, 'show'])->name('admin.information.show');
+Route::get('/admin/information/{id}/edit', [InformationController::class, 'edit'])->name('admin.information.edit');
+Route::put('/admin/information/{information}', [InformationController::class, 'update'])->name('admin.information.update');
+Route::delete('/admin/information/{information}', [InformationController::class, 'destroy'])->name('admin.information.destroy');
 
 Route::middleware('auth')->group(function () {
     Route::get('/admin/manage_admin_fakultas', [AdminFacultyController::class, 'index'])->name('admin.admin_faculty.index');
