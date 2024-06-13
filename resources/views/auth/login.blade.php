@@ -41,7 +41,7 @@
                         </button>
                     </form>
                     <div class="mt-3 text-center">
-                        <p>Don't have an account? <a href="{{ route('register') }}">Sign Up</a></p>
+                        <p>Don't have an account? <a href="{{ route('register') }}">Register</a></p>
                     </div>
                 </div>
             </div>

@@ -58,9 +58,14 @@
 
                         <div class="form-group">
                             <label for="batch">{{ __('Batch') }}</label>
-                            <input id="batch" type="number"
-                                class="mb-2 form-control{{ $errors->has('batch') ? ' is-invalid' : '' }}" name="batch"
-                                value="{{ old('batch') }}" required autocomplete="batch">
+                            <select id="batch" class="mb-2 form-control{{ $errors->has('batch') ? ' is-invalid' : '' }}"
+                                name="batch" required>
+                                <option value="" disabled selected>Select Batch</option>
+                                @for ($year = 2017; $year <= 2024; $year++) <option value="{{ $year }}"
+                                    {{ old('batch') == $year ? 'selected' : '' }}>
+                                    {{ $year }}</option>
+                                    @endfor
+                            </select>
                             @error('batch')
                             <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
