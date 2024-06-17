@@ -91,8 +91,22 @@ class InformationController extends Controller
         return view('guest.info.index', compact('informations', 'recent_informations'));
     }
 
-    public function guestShow(Information $information)
+    public function guestShow(Information $information, Request $request)
     {
-        return view('guest.info.show', compact('information'));
+        $search = $request->query('search');
+
+        $query = Information::where('publish_date', '<=', Carbon::now())
+            ->orderBy('publish_date', 'desc');
+
+        if ($search) {
+            $query->where('title', 'like', '%' . $search . '%');
+        }
+
+        $recent_informations = Information::where('publish_date', '<=', Carbon::now())
+            ->orderBy('publish_date', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('guest.info.show', compact('information', 'recent_informations'));
     }
 }
