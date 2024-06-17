@@ -19,4 +19,8 @@ class Information extends Model
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    protected $casts = [
+        'publish_date' => 'datetime'
+    ];
 }

@@ -14,7 +14,7 @@ use App\Http\Controllers\PresidentCandidateController;
 use App\Http\Controllers\VicePresidentCandidateController;
 use App\Http\Controllers\InformationController;
 
-Route::get('/', [LandingController::class, 'index'])->name('landing');
+Route::get('/', [LandingController::class, 'index'])->name('guest.landing');
 
 Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
@@ -71,3 +71,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/manage_admin_univ/store', [AdminUnivController::class, 'store'])->name('admin.admin_univ.store');
     Route::post('/admin/manage_admin_univ/remove/{userId}', [AdminUnivController::class, 'removeAdminUniv'])->name('admin.admin_univ.remove');
 });
+
+Route::get('/info', [InformationController::class, 'guestIndex'])->name('guest.info.index');
+Route::get('/info/{information}', [InformationController::class, 'guestShow'])->name('guest.info.show');

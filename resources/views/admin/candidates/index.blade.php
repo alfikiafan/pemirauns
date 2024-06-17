@@ -71,33 +71,33 @@
         </tbody>
       </table>
     </div>
-      <div class="d-flex flex-column align-items-center my-4">
-        <div class="mb-2">
-            <p class="mb-0 text-sm">
-            Showing {{ $candidates->firstItem() }} to {{ $candidates->lastItem() }} of {{ $candidates->total() }} results
-            </p>
-        </div>
-        <div>
-            <ul class="pagination pagination-info justify-content-center mb-0">
-            <li class="page-item{{ $candidates->onFirstPage() ? ' disabled' : '' }}">
-                <a class="page-link" href="{{ $candidates->previousPageUrl() }}" aria-label="Previous">
-                <span aria-hidden="true"><i class="fas fa-chevron-left" aria-hidden="true"></i></span>
-                </a>
-            </li>
+    <div class="d-flex flex-column align-items-center my-4">
+      <div class="mb-2">
+          <p class="mb-0 text-sm">
+          Showing {{ $candidates->firstItem() }} to {{ $candidates->lastItem() }} of {{ $candidates->total() }} results
+          </p>
+      </div>
+      <div>
+          <ul class="pagination pagination-info justify-content-center mb-0">
+          <li class="page-item{{ $candidates->onFirstPage() ? ' disabled' : '' }}">
+              <a class="page-link" href="{{ $candidates->previousPageUrl() }}" aria-label="Previous">
+              <span aria-hidden="true"><i class="fas fa-chevron-left" aria-hidden="true"></i></span>
+              </a>
+          </li>
 
-            @for ($i = 1; $i <= $candidates->lastPage(); $i++)
-                <li class="page-item{{ $candidates->currentPage() == $i ? ' active' : '' }}">
-                <a class="page-link" href="{{ $candidates->url($i) }}">{{ $i }}</a>
-                </li>
-            @endfor
+          @for ($i = 1; $i <= $candidates->lastPage(); $i++)
+              <li class="page-item{{ $candidates->currentPage() == $i ? ' active' : '' }}">
+              <a class="page-link" href="{{ $candidates->url($i) }}">{{ $i }}</a>
+              </li>
+          @endfor
 
-            <li class="page-item{{ $candidates->hasMorePages() ? '' : ' disabled' }}">
-                <a class="page-link" href="{{ $candidates->nextPageUrl() }}" aria-label="Next">
-                <span aria-hidden="true"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
-                </a>
-            </li>
-            </ul>
-        </div>
+          <li class="page-item{{ $candidates->hasMorePages() ? '' : ' disabled' }}">
+              <a class="page-link" href="{{ $candidates->nextPageUrl() }}" aria-label="Next">
+              <span aria-hidden="true"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
+              </a>
+          </li>
+          </ul>
+      </div>
     </div>
   </div>
 </div>
