@@ -28,62 +28,60 @@
 
 <body>
 
-    <!-- ======= Header ======= -->
-    <header id="header" class="header fixed-top">
-        <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+     <!-- ======= Header ======= -->
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
-            {{-- ======== Logo Navbar ========--}}
-            <a href="index.html" class="logo d-flex align-items-center">
-                <img src="{{ asset('assets/guest/img/logo_uns.png')}}" class="img-fluid" alt="">
-            </a>
-            {{-- ======== Logo Navbar ========--}}
+        <a href="{{ route('guest.landing') }}" class="logo d-flex align-items-center me-auto">
+            <img src="{{ asset('assets/guest/img/logo_uns.png') }}" alt="Logo UNS" class="img-fluid">
+        </a>
 
-            {{-- Navbar Item --}}
-            <nav id="navbar" class="navbar">
-                <ul>
-                    <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-                    <li><a class="nav-link scrollto" href="#about">Pengumuman</a></li>
-                    <li class="dropdown"><a href="#"><span>Paslon</span> <i class="bi bi-chevron-down"></i></a>
-                        <ul>
-                            <li class="dropdown"><a href="#"><span>Paslon 1</span> <i
-                                        class="bi bi-chevron-right"></i></a>
-                                <ul>
-                                    <li><a href="#">Visi Misi</a></li>
-                                    <li><a href="#">Video Kampanye</a></li>
-                                    <li><a href="#">Riwayat Prestasi</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown"><a href="#"><span>Paslon 2</span> <i
-                                        class="bi bi-chevron-right"></i></a>
-                                <ul>
-                                    <li><a href="#">Visi Misi</a></li>
-                                    <li><a href="#">Video Kampanye</a></li>
-                                    <li><a href="#">Riwayat Prestasi</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown"><a href="#"><span>Paslon 3</span> <i
-                                        class="bi bi-chevron-right"></i></a>
-                                <ul>
-                                    <li><a href="#">Visi Misi</a></li>
-                                    <li><a href="#">Video Kampanye</a></li>
-                                    <li><a href="#">Riwayat Prestasi</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown"><a href="#"><span>Help</span> <i class="bi bi-chevron-down"></i></a>
-                        <ul>
-                            <li><a href="#">QnA</a></li>
-                            <li><a href="#">Customer Service</a></li>
-                        </ul>
-                    <li><a class="getstarted scrollto" href="{{ route('login') }}">Login</a></li>
-                </ul>
-                <i class="bi bi-list mobile-nav-toggle"></i>
-            </nav>
-            <!-- End navbar -->
-
-        </div>
-    </header><!-- End Header -->
+        <nav id="navmenu" class="navmenu">
+            <ul>
+                <li><a href="{{ route('guest.landing') }}" class="active">Home</a></li>
+                <li><a href="{{ route('guest.info.index') }}">Pengumuman</a></li>
+                <li class="dropdown">
+                    <a href="#"><span>Paslon</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                        <li class="dropdown">
+                            <a href="#"><span>Paslon 1</span> <i class="bi bi-chevron-right"></i></a>
+                            <ul>
+                                <li><a href="#">Visi Misi</a></li>
+                                <li><a href="#">Video Kampanye</a></li>
+                                <li><a href="#">Riwayat Prestasi</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#"><span>Paslon 2</span> <i class="bi bi-chevron-right"></i></a>
+                            <ul>
+                                <li><a href="#">Visi Misi</a></li>
+                                <li><a href="#">Video Kampanye</a></li>
+                                <li><a href="#">Riwayat Prestasi</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#"><span>Paslon 3</span> <i class="bi bi-chevron-right"></i></a>
+                            <ul>
+                                <li><a href="#">Visi Misi</a></li>
+                                <li><a href="#">Video Kampanye</a></li>
+                                <li><a href="#">Riwayat Prestasi</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#"><span>Help</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                        <li><a href="#">QnA</a></li>
+                        <li><a href="#">Customer Service</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+        <a class="btn-getstarted flex-md-shrink-0" href="{{ route('login') }}">Login</a>
+      </div>
+  </header>
 
     <!-- ======= Main Section ======= -->
     <main id="hero" class="hero d-flex align-items-center">

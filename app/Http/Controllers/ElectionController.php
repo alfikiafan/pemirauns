@@ -63,8 +63,13 @@ class ElectionController extends Controller
     public function delete($id)
     {
         $election = Election::find($id);
-        $election->delete();
-
-        return redirect()->route('admin.election.delete')->with('success', 'Election deleted successfully');
+        // apabila terdapat data yang terkait dengan election, maka akan ada error
+        if ($election->candidates->count() > 0) {
+            return redirect()->route('admin.election')->withErrors('Election cannot be deleted because it has candidates');
+        }
+        else{
+            $election->delete();
+            return redirect()->route('admin.election')->with('success', 'Election deleted successfully');
+        }
     }
 }

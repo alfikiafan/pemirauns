@@ -47,6 +47,16 @@ class UserSeeder extends Seeder
             ]);
         }
 
+        //Create user dummy
+        $user = User::create([
+            'name' => 'User',
+            'email' => 'user@pemira.com',
+            'nim' => 'L0001',
+            'password' => bcrypt('user'),
+            'faculty' => 'Univ',
+            'batch' => 2020,
+        ]);
+
         User::factory()->count(20)->create();
     }
 }
