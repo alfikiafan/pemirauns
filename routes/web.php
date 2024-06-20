@@ -4,16 +4,17 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\VoterController;
+use App\Http\Controllers\VotingController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\ElectionController;
 use App\Http\Controllers\AdminUnivController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InformationController;
 use App\Http\Controllers\AdminFacultyController;
 use App\Http\Controllers\PresidentCandidateController;
 use App\Http\Controllers\VicePresidentCandidateController;
-use App\Http\Controllers\InformationController;
-use App\Http\Controllers\ContactController;
 
 Route::get('/', [LandingController::class, 'index'])->name('guest.landing');
 
@@ -79,3 +80,5 @@ Route::get('/info', [InformationController::class, 'guestIndex'])->name('guest.i
 Route::get('/info/{information}', [InformationController::class, 'guestShow'])->name('guest.info.show');
 
 Route::get('/user/contact', [ContactController::class, 'showForm'])->name('user.contact');
+Route::get('/user/vote',[VotingController::class, 'index'])->name('user.vote');
+Route::get('/user/vote/{id}',[VotingController::class, 'view'])->name('user.vote.view');

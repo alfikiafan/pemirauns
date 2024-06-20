@@ -201,11 +201,12 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('#') ? 'active' : '' }}" href="#">
+                <a class="nav-link {{ Request::is('user/vote*') ? 'active' : '' }}" 
+                href="{{ route('user.vote') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1rem;"
-                            class="fas fa-lg fa-vote-yea ps-2 pe-2 text-center {{ Request::is('#') ? 'text-white' : 'text-dark' }}"
+                            class="fas fa-lg fa-vote-yea ps-2 pe-2 text-center {{ Request::is('user/vote') ? 'text-white' : 'text-dark' }}"
                             aria-hidden="true"></i>
                     </div>
                     <span class="nav-link-text ms-1 text-white">Vote</span>
