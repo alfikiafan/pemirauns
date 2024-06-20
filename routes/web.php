@@ -13,6 +13,7 @@ use App\Http\Controllers\AdminFacultyController;
 use App\Http\Controllers\PresidentCandidateController;
 use App\Http\Controllers\VicePresidentCandidateController;
 use App\Http\Controllers\InformationController;
+use App\Http\Controllers\ContactController;
 
 Route::get('/', [LandingController::class, 'index'])->name('guest.landing');
 
@@ -57,6 +58,8 @@ Route::get('/admin/information/{information}', [InformationController::class, 's
 Route::get('/admin/information/{id}/edit', [InformationController::class, 'edit'])->name('admin.information.edit');
 Route::put('/admin/information/{information}', [InformationController::class, 'update'])->name('admin.information.update');
 Route::delete('/admin/information/{information}', [InformationController::class, 'destroy'])->name('admin.information.destroy');
+Route::get('/user/information', [InformationController::class, 'userIndex'])->name('user.information.index');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/admin/manage_admin_fakultas', [AdminFacultyController::class, 'index'])->name('admin.admin_faculty.index');
@@ -74,3 +77,5 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/info', [InformationController::class, 'guestIndex'])->name('guest.info.index');
 Route::get('/info/{information}', [InformationController::class, 'guestShow'])->name('guest.info.show');
+
+Route::get('/user/contact', [ContactController::class, 'showForm'])->name('user.contact');

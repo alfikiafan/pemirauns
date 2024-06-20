@@ -109,4 +109,21 @@ class InformationController extends Controller
 
         return view('guest.info.show', compact('information', 'recent_informations'));
     }
+
+    public function userIndex(Request $request)
+    {
+        $search = $request->query('search');
+
+        $query = Information::where('publish_date', '<=', Carbon::now())
+            ->orderBy('publish_date', 'desc');
+
+        if ($search) {
+            $query->where('title', 'like', '%' . $search . '%');
+        }
+
+        $informations = $query->paginate(10);
+
+        return view('user.information.index', compact('informations'));
+    }
+
 }
