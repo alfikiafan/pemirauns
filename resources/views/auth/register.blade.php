@@ -1,7 +1,7 @@
 @extends('auth.layout')
 
 @section('content')
-<div class="container-fluid" style="margin-top: 350px;">
+<div class="container-fluid">
     <div class="container d-flex justify-content-center align-items-center">
         <div class="col-md-6">
             <div class="card shadow">

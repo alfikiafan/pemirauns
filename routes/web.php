@@ -82,3 +82,5 @@ Route::get('/info/{information}', [InformationController::class, 'guestShow'])->
 Route::get('/user/contact', [ContactController::class, 'showForm'])->name('user.contact');
 Route::get('/user/vote',[VotingController::class, 'index'])->name('user.vote');
 Route::get('/user/vote/{id}',[VotingController::class, 'view'])->name('user.vote.view');
+Route::post('/user/vote', [VotingController::class, 'vote'])->name('user.vote.submit');
+Route::get('/vote/selfie/{candidate_id}', [VotingController::class, 'selfie'])->name('user.vote.selfie');
