@@ -117,15 +117,5 @@
             </p>
         </div>
     </div>
-    <!-- Vote Button Section -->
-    <div class="row vote-button">
-        <div class="col-md-12">
-            <form action="{{ route('user.vote') }}" method="POST">
-                @csrf
-                <input type="hidden" name="candidate_id" value="{{ $candidate->id }}">
-                <button type="submit" class="btn btn-primary btn-lg">VOTE</button>
-            </form>
-        </div>
-    </div>
 </div>
 @endsection
