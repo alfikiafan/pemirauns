@@ -9,12 +9,18 @@ class ElectionController extends Controller
 {
     public function index()
     {
-        $elections = Election::all();
+        $elections = Election::paginate(10);
         return view('admin.election.index', ['elections' => $elections]);
     }
 
-    public function create(Request $request)
+
+
+    public function create()
     {
+        return view('admin.election.create');  
+    }
+
+    public function store(Request $request){
         $request->validate([
             'name' => 'required|string|max:255',
             'faculty' => 'required|string|max:255',

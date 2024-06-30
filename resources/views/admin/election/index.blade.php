@@ -22,7 +22,16 @@
 
         <div class="card mb-4">
             <div class="card-header">
-                <h5>Pemira Election</h5>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h6 class="m-0">Elections Table</h6>
+                        <p class="text-sm">See all Elections in your unit</p>
+                    </div>
+                    <div class="ml-auto p-0">
+                        <a href="{{ route('admin.election.create') }}" class="btn bg-gradient-primary">Create
+                            Election</a>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -64,39 +73,38 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="d-flex flex-column align-items-center my-4">
+                    <div class="mb-2">
+                        <p class="mb-0 text-sm">
+                            Showing {{ $elections->firstItem() }} to {{ $elections->lastItem() }} of
+                            {{ $elections->total() }} results
+                        </p>
+                    </div>
+                    <div>
+                        <ul class="pagination pagination-info justify-content-center mb-0">
+                            <li class="page-item{{ $elections->onFirstPage() ? ' disabled' : '' }}">
+                                <a class="page-link" href="{{ $elections->previousPageUrl() }}" aria-label="Previous">
+                                    <span aria-hidden="true"><i class="fas fa-chevron-left" aria-hidden="true"></i></span>
+                                </a>
+                            </li>
+
+                            @for ($i = 1; $i <= $elections->lastPage(); $i++)
+                                <li class="page-item{{ $elections->currentPage() == $i ? ' active' : '' }}">
+                                    <a class="page-link" href="{{ $elections->url($i) }}">{{ $i }}</a>
+                                </li>
+                            @endfor
+
+                            <li class="page-item{{ $elections->hasMorePages() ? '' : ' disabled' }}">
+                                <a class="page-link" href="{{ $elections->nextPageUrl() }}" aria-label="Next">
+                                    <span aria-hidden="true"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-header">
-                <h5>Add Election</h5>
-            </div>
-            <div class="card-body">
-
-                <form action="{{ route('admin.election.create') }}" method="POST">
-                    @csrf
-                    <div class="form-group mb-3">
-                        <label for="name">Nama Pemira</label>
-                        <input type="text" name="name" class="form-control" required>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="faculty">Fakultas</label>
-                        <input type="text" name="faculty" class="form-control" required>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="start_date">Tanggal Dibuka</label>
-                        <input type="date" name="start_date" class="form-control" required>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="end_date">Tanggal Ditutup</label>
-                        <input type="date" name="end_date" class="form-control" required>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="description">Deskripsi</label>
-                        <textarea name="description" class="form-control" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add Election</button>
-            </div>
-        </div>
+       
     </div>
 @endsection
