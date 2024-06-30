@@ -19,11 +19,11 @@
   <div class="card-header pb-0">
     <div class="d-flex align-items-center justify-content-between">
       <div>
-        <h6 class="m-0">President Candidates Table</h6>
-        <p class="text-sm">See all president candidates in your unit</p>
+        <h6 class="m-0">Vice President Candidates Table</h6>
+        <p class="text-sm">See all vice president candidates in your unit</p>
       </div>
       <div class="ml-auto p-0">
-        <a href="{{ route('admin.candidates.create') }}" class="btn bg-gradient-primary">Create Candidate</a>
+        <a href="{{ route('admin.candidates.create') }}" class="btn bg-gradient-primary">Add Vice President Candidate</a>
       </div>
     </div>
   </div>
@@ -33,7 +33,7 @@
         <thead>
           <tr>
             <th class="text-secondary text-xxs font-weight-bolder pe-3">#</th>
-            <th class="text-secondary text-xxs font-weight-bolder px-2">President Candidate Name</th>
+            <th class="text-secondary text-xxs font-weight-bolder px-2">Vice President Candidate Name</th>
             <th class="text-secondary text-xxs font-weight-bolder px-2">Biography</th>
           </tr>
         </thead>

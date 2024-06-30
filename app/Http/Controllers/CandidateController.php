@@ -20,15 +20,17 @@ class CandidateController extends Controller
 
     public function create()
     {
-        $users = User::whereDoesntHave('roles')
-            ->whereDoesntHave('presidentCandidates')
-            ->whereDoesntHave('vicePresidentCandidates')
-            ->orderBy('name', 'asc')
-            ->get();
+        $presidentCandidates = PresidentCandidate::all();
+        $vicePresidentCandidates = VicePresidentCandidate::all();
 
         $elections = Election::all();
 
-        return view('admin.candidates.create', compact('users', 'elections'));
+        return view('admin.candidates.create', [
+            'elections' => $elections,
+            'vicePresidentCandidates' => $vicePresidentCandidates,
+            'presidentCandidates' => $presidentCandidates,
+
+        ]);
     }
 
     public function store(Request $request)
@@ -44,7 +46,7 @@ class CandidateController extends Controller
 
         $presidentCandidateExists = PresidentCandidate::where('user_id', $request->input('president_candidate_id'))->exists();
         $vicePresidentCandidateExists = VicePresidentCandidate::where('user_id', $request->input('vice_president_candidate_id'))->exists();
-        
+
         if ($presidentCandidateExists || $vicePresidentCandidateExists) {
             return redirect()->back()->withErrors('Pengguna sudah terdaftar sebagai kandidat.');
         }
@@ -103,7 +105,7 @@ class CandidateController extends Controller
 
         $isPresidentChanged = $candidate->presidentCandidate->user_id != $request->input('president_candidate_id');
         $isVicePresidentChanged = $candidate->vicePresidentCandidate->user_id != $request->input('vice_president_candidate_id');
-        
+
         $candidate->presidentCandidate->update([
             'user_id' => $request->input('president_candidate_id'),
             'biography' => $isPresidentChanged ? '' : $candidate->presidentCandidate->biography,

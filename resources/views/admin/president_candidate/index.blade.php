@@ -23,7 +23,7 @@
         <p class="text-sm">See all president candidates in your unit</p>
       </div>
       <div class="ml-auto p-0">
-        <a href="{{ route('admin.candidates.create') }}" class="btn bg-gradient-primary">Create Candidate</a>
+        <a href="{{ route('admin.candidates.create') }}" class="btn bg-gradient-primary">Add President Candidate</a>
       </div>
     </div>
   </div>
