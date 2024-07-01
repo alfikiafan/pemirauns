@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PresidentCandidate;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PresidentCandidateController extends Controller
@@ -13,7 +14,7 @@ class PresidentCandidateController extends Controller
     public function index()
     {
         return view('admin.president_candidate.index',[
-            'presidentCandidates' => PresidentCandidate::all(),
+            'presidentCandidates' => PresidentCandidate::paginate(10),
         ]);
     }
 
@@ -22,7 +23,14 @@ class PresidentCandidateController extends Controller
      */
     public function create()
     {
-        //
+        $presidentCandidates = User::whereDoesntHave('PresidentCandidates')
+        ->orderBy('name', 'asc')
+        ->get();
+
+        return view('admin.president_candidate.create', [
+            'presidentCandidates' => $presidentCandidates
+
+        ]);
     }
 
     /**
@@ -30,7 +38,18 @@ class PresidentCandidateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'president_candidate_id' => 'required',
+            'biography' => 'required',
+
+        ]);
+
+        PresidentCandidate::create([
+            'user_id' => $request->president_candidate_id,
+            'biography' => $request->biography,
+        ]);
+
+        return redirect()->route('president-candidate.index')->with('success', 'President Candidate berhasil ditambahkan.');
     }
 
     /**
@@ -46,7 +65,9 @@ class PresidentCandidateController extends Controller
      */
     public function edit(PresidentCandidate $presidentCandidate)
     {
-        //
+        return view('admin.president_candidate.edit',[
+            'presidentCandidate' => $presidentCandidate,
+        ]);
     }
 
     /**
@@ -54,7 +75,15 @@ class PresidentCandidateController extends Controller
      */
     public function update(Request $request, PresidentCandidate $presidentCandidate)
     {
-        //
+        $validatedData = $request->validate([
+            'biography' => 'required',
+
+        ]);
+
+        $presidentCandidate->update($validatedData);
+
+        return redirect()->route('president-candidate.index')
+                    ->with('success', 'President Candidate updated successfully');
     }
 
     /**
@@ -62,6 +91,12 @@ class PresidentCandidateController extends Controller
      */
     public function destroy(PresidentCandidate $presidentCandidate)
     {
-        //
+        if ($presidentCandidate->candidates()->exists()) {
+            return redirect()->route('vice-president-candidate.index')->with('error', 'Candidate sedang Tergabung kedalam Pemilihan');
+        }
+
+        $presidentCandidate->delete();
+
+        return redirect()->route('vice-president-candidate.index')->with('success', 'Vice President Candidate deleted successfully!');
     }
 }

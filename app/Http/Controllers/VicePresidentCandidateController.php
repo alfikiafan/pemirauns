@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\VicePresidentCandidate;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class VicePresidentCandidateController extends Controller
@@ -13,7 +14,7 @@ class VicePresidentCandidateController extends Controller
     public function index()
     {
         return view('admin.vice_president_candidate.index',[
-            'vicePresidentCandidates' => VicePresidentCandidate::all(),
+            'vicePresidentCandidates' => VicePresidentCandidate::paginate(10),
         ]);
     }
 
@@ -22,7 +23,14 @@ class VicePresidentCandidateController extends Controller
      */
     public function create()
     {
-        //
+        $vicePresidentCandidates = User::whereDoesntHave('vicePresidentCandidates')
+        ->orderBy('name', 'asc')
+        ->get();
+
+        return view('admin.vice_president_candidate.create', [
+            'vicePresidentCandidates' => $vicePresidentCandidates
+
+        ]);
     }
 
     /**
@@ -30,7 +38,18 @@ class VicePresidentCandidateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'vice_president_candidate_id' => 'required',
+            'biography' => 'required',
+
+        ]);
+
+        VicePresidentCandidate::create([
+            'user_id' => $request->vice_president_candidate_id,
+            'biography' => $request->biography,
+        ]);
+
+        return redirect()->route('vice-president-candidate.index')->with('success', 'Vice President Candidate berhasil ditambahkan.');
     }
 
     /**
@@ -46,7 +65,9 @@ class VicePresidentCandidateController extends Controller
      */
     public function edit(VicePresidentCandidate $vicePresidentCandidate)
     {
-        //
+        return view('admin.vice_president_candidate.edit',[
+            'vicePresidentCandidate' => $vicePresidentCandidate,
+        ]);
     }
 
     /**
@@ -54,14 +75,28 @@ class VicePresidentCandidateController extends Controller
      */
     public function update(Request $request, VicePresidentCandidate $vicePresidentCandidate)
     {
-        //
+        $validatedData = $request->validate([
+            'biography' => 'required',
+
+        ]);
+
+        $vicePresidentCandidate->update($validatedData);
+
+        return redirect()->route('vice-president-candidate.index')
+                    ->with('success', 'Vice President Candidate updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(VicePresidentCandidate $vicePresidentCandidate)
-    {
-        //
+{
+    if ($vicePresidentCandidate->candidates()->exists()) {
+        return redirect()->route('vice-president-candidate.index')->with('error', 'Candidate sedang Tergabung kedalam Pemilihan');
     }
+
+    $vicePresidentCandidate->delete();
+
+    return redirect()->route('vice-president-candidate.index')->with('success', 'Vice President Candidate deleted successfully!');
+}
 }
