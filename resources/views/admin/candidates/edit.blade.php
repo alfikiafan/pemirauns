@@ -23,10 +23,10 @@
             <div class="mb-3">
                 <label for="president_candidate_id" class="form-label">President Candidate</label>
                 <select id="president_candidate_id" name="president_candidate_id" class="form-select" required>
-                    @foreach ($users as $user)
-                        <option value="{{ $user->id }}"
-                            @if($user->id == $candidate->presidentCandidate->user_id) selected @endif>
-                            {{ $user->name }}
+                    @foreach ($presidentCandidates as $presidentCandidate)
+                        <option value="{{ $presidentCandidate->id }}"
+                            @if($presidentCandidate->id == $candidate->president_candidate_id) selected @endif>
+                            {{ $presidentCandidate->user->name }}
                         </option>
                     @endforeach
                 </select>
@@ -35,10 +35,10 @@
             <div class="mb-3">
                 <label for="vice_president_candidate_id" class="form-label">Vice President Candidate</label>
                 <select id="vice_president_candidate_id" name="vice_president_candidate_id" class="form-select" required>
-                    @foreach ($users as $user)
-                        <option value="{{ $user->id }}"
-                            @if($user->id == $candidate->vicePresidentCandidate->user_id) selected @endif>
-                            {{ $user->name }}
+                    @foreach ($vicePresidentCandidates as $vicePresidentCandidate)
+                        <option value="{{ $vicePresidentCandidate->id }}"
+                            @if($vicePresidentCandidate->id == $candidate->vice_president_candidate_id) selected @endif>
+                            {{ $vicePresidentCandidate->user->name }}
                         </option>
                     @endforeach
                 </select>

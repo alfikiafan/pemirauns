@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Candidate;
-use App\Models\User;
 use App\Models\Election;
 use App\Models\PresidentCandidate;
 use App\Models\VicePresidentCandidate;
@@ -14,56 +13,37 @@ class CandidateController extends Controller
 {
     public function index()
     {
-        $candidates = Candidate::with('presidentCandidate', 'vicePresidentCandidate', 'election')->paginate(10);
+        $candidates = Candidate::with(['presidentCandidate.user', 'vicePresidentCandidate.user', 'election'])->paginate(10);
         return view('admin.candidates.index', compact('candidates'));
     }
 
     public function create()
     {
-        $presidentCandidates = PresidentCandidate::all();
-        $vicePresidentCandidates = VicePresidentCandidate::all();
-
+        $presidentCandidates = PresidentCandidate::with('user')->orderBy('created_at', 'desc')->get();
+        $vicePresidentCandidates = VicePresidentCandidate::with('user')->orderBy('created_at', 'desc')->get();
         $elections = Election::all();
 
         return view('admin.candidates.create', [
             'elections' => $elections,
             'vicePresidentCandidates' => $vicePresidentCandidates,
             'presidentCandidates' => $presidentCandidates,
-
         ]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'president_candidate_id' => 'required|exists:users,id',
-            'vice_president_candidate_id' => 'required|exists:users,id',
+            'president_candidate_id' => 'required|exists:president_candidates,id',
+            'vice_president_candidate_id' => 'required|exists:vice_president_candidates,id',
             'election_id' => 'required|exists:elections,id',
             'video' => 'required|string',
             'vision' => 'required|string',
             'mission' => 'required|string',
         ]);
 
-        $presidentCandidateExists = PresidentCandidate::where('user_id', $request->input('president_candidate_id'))->exists();
-        $vicePresidentCandidateExists = VicePresidentCandidate::where('user_id', $request->input('vice_president_candidate_id'))->exists();
-
-        if ($presidentCandidateExists || $vicePresidentCandidateExists) {
-            return redirect()->back()->withErrors('Pengguna sudah terdaftar sebagai kandidat.');
-        }
-
-        $presidentCandidate = PresidentCandidate::create([
-            'user_id' => $request->input('president_candidate_id'),
-            'biography' => '',
-        ]);
-
-        $vicePresidentCandidate = VicePresidentCandidate::create([
-            'user_id' => $request->input('vice_president_candidate_id'),
-            'biography' => '',
-        ]);
-
         Candidate::create([
-            'president_candidate_id' => $presidentCandidate->id,
-            'vice_president_candidate_id' => $vicePresidentCandidate->id,
+            'president_candidate_id' => $request->input('president_candidate_id'),
+            'vice_president_candidate_id' => $request->input('vice_president_candidate_id'),
             'election_id' => $request->input('election_id'),
             'video' => $request->input('video'),
             'vision' => $request->input('vision'),
@@ -77,24 +57,18 @@ class CandidateController extends Controller
     {
         $candidate = Candidate::with(['presidentCandidate.user', 'vicePresidentCandidate.user'])->findOrFail($id);
 
-        $users = User::whereDoesntHave('roles')
-            ->whereDoesntHave('presidentCandidates')
-            ->whereDoesntHave('vicePresidentCandidates')
-            ->orWhere('id', $candidate->presidentCandidate->user_id)
-            ->orWhere('id', $candidate->vicePresidentCandidate->user_id)
-            ->orderBy('name', 'asc')
-            ->get();
-
+        $presidentCandidates = PresidentCandidate::with('user')->orderBy('created_at', 'desc')->get();
+        $vicePresidentCandidates = VicePresidentCandidate::with('user')->orderBy('created_at', 'desc')->get();
         $elections = Election::orderBy('name', 'asc')->get();
 
-        return view('admin.candidates.edit', compact('candidate', 'users', 'elections'));
+        return view('admin.candidates.edit', compact('candidate', 'presidentCandidates', 'vicePresidentCandidates', 'elections'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'president_candidate_id' => 'required|exists:users,id',
-            'vice_president_candidate_id' => 'required|exists:users,id',
+            'president_candidate_id' => 'required|exists:president_candidates,id',
+            'vice_president_candidate_id' => 'required|exists:vice_president_candidates,id',
             'election_id' => 'required|exists:elections,id',
             'video' => 'required|string',
             'vision' => 'required|string',
@@ -103,20 +77,9 @@ class CandidateController extends Controller
 
         $candidate = Candidate::findOrFail($id);
 
-        $isPresidentChanged = $candidate->presidentCandidate->user_id != $request->input('president_candidate_id');
-        $isVicePresidentChanged = $candidate->vicePresidentCandidate->user_id != $request->input('vice_president_candidate_id');
-
-        $candidate->presidentCandidate->update([
-            'user_id' => $request->input('president_candidate_id'),
-            'biography' => $isPresidentChanged ? '' : $candidate->presidentCandidate->biography,
-        ]);
-
-        $candidate->vicePresidentCandidate->update([
-            'user_id' => $request->input('vice_president_candidate_id'),
-            'biography' => $isVicePresidentChanged ? '' : $candidate->vicePresidentCandidate->biography,
-        ]);
-
         $candidate->update([
+            'president_candidate_id' => $request->input('president_candidate_id'),
+            'vice_president_candidate_id' => $request->input('vice_president_candidate_id'),
             'election_id' => $request->input('election_id'),
             'video' => $request->input('video'),
             'vision' => $request->input('vision'),
@@ -128,9 +91,6 @@ class CandidateController extends Controller
 
     public function destroy(Candidate $candidate)
     {
-        $presidentId = $candidate->president_candidate_id;
-        $vicePresidentId = $candidate->vice_president_candidate_id;
-
         $hasVotes = Vote::where('candidate_id', $candidate->id)->exists();
 
         if ($hasVotes) {
@@ -139,9 +99,6 @@ class CandidateController extends Controller
 
         $candidate->delete();
 
-        PresidentCandidate::where('id', $presidentId)->delete();
-        VicePresidentCandidate::where('id', $vicePresidentId)->delete();
-
-        return redirect()->route('admin.candidates.index')->with('success', 'Candidate deleted successfully');
+        return redirect()->route('admin.candidates.index')->with('success', 'Candidate berhasil dihapus.');
     }
 }

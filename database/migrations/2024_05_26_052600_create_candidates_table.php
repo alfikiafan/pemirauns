@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('election_id')->constrained();
             $table->string('video');
             $table->string('vision');
-            $table->string('mission');
+            $table->text('mission');
             $table->timestamps();
         });
     }
