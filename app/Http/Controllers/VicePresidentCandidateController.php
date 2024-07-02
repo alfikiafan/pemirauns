@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\View;
+use Illuminate\Http\Request;
 use App\Models\VicePresidentCandidate;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class VicePresidentCandidateController extends Controller
 {
@@ -13,6 +14,7 @@ class VicePresidentCandidateController extends Controller
      */
     public function index()
     {
+        View::share('showSearchBox', true);
         return view('admin.vice_president_candidate.index',[
             'vicePresidentCandidates' => VicePresidentCandidate::paginate(10),
         ]);

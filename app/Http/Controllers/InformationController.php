@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use App\Models\Information;
 use Carbon\Carbon;
@@ -12,6 +13,7 @@ class InformationController extends Controller
     public function index()
     {
         $informations = Information::paginate(10);
+        View::share('showSearchBox', true);
         return view('admin.information.index', compact('informations'));
     }
 

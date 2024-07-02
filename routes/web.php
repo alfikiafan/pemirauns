@@ -35,12 +35,12 @@ Route::get('/user/dashboard', function () {
 Route::get('/admin/manage-user', [VoterController::class, 'index'])->name('admin.users.index');
 Route::post('/update-status', [VoterController::class, 'updateAccountStatus'])->name('admin.updateAccountStatus');
 
-Route::get('/admin/manage-election', [ElectionController::class, 'index'])->name('admin.election');
-Route::get('/admin/manage-election/create', [ElectionController::class, 'create'])->name('admin.election.create');
-Route::post('/admin/manage-election', [ElectionController::class, 'store'])->name('admin.election.store');
-Route::get('/admin/manage-election/{id}', [ElectionController::class, 'view'])->name('admin.election.view');
-Route::put('/admin/manage-election/{id}', [ElectionController::class, 'update'])->name('admin.election.update');
-Route::delete('/admin/manage-election/{id}', [ElectionController::class, 'delete'])->name('admin.election.delete');
+Route::get('/admin/election', [ElectionController::class, 'index'])->name('admin.election');
+Route::get('/admin/election/create', [ElectionController::class, 'create'])->name('admin.election.create');
+Route::post('/admin/election', [ElectionController::class, 'store'])->name('admin.election.store');
+Route::get('/admin/election/{id}', [ElectionController::class, 'view'])->name('admin.election.view');
+Route::put('/admin/election/{id}', [ElectionController::class, 'update'])->name('admin.election.update');
+Route::delete('/admin/election/{id}', [ElectionController::class, 'delete'])->name('admin.election.delete');
 
 Route::get('/admin/candidate', [CandidateController::class, 'index'])->name('admin.candidates.index');
 Route::get('/admin/candidate/create', [CandidateController::class, 'create'])->name('admin.candidates.create');
@@ -64,17 +64,17 @@ Route::get('/user/information', [InformationController::class, 'userIndex'])->na
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/admin/manage_admin_fakultas', [AdminFacultyController::class, 'index'])->name('admin.admin_faculty.index');
-    Route::get('/admin/manage_admin_fakultas/create', [AdminFacultyController::class, 'create'])->name('admin.admin_faculty.create');
-    Route::post('/admin/manage_admin_fakultas/store', [AdminFacultyController::class, 'store'])->name('admin.admin_faculty.store');
-    Route::post('/admin/manage_admin_fakultas/remove/{userId}', [AdminFacultyController::class, 'removeAdminFakultas'])->name('admin.admin_faculty.remove');
+    Route::get('/admin/manage-admin-fakultas', [AdminFacultyController::class, 'index'])->name('admin.admin_faculty.index');
+    Route::get('/admin/manage-admin-fakultas/create', [AdminFacultyController::class, 'create'])->name('admin.admin_faculty.create');
+    Route::post('/admin/manage-admin-fakultas/store', [AdminFacultyController::class, 'store'])->name('admin.admin_faculty.store');
+    Route::post('/admin/manage-admin-fakultas/remove/{userId}', [AdminFacultyController::class, 'removeAdminFakultas'])->name('admin.admin_faculty.remove');
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/admin/manage_admin_univ', [AdminUnivController::class, 'index'])->name('admin.admin_univ.index');
-    Route::get('/admin/manage_admin_univ/create', [AdminUnivController::class, 'create'])->name('admin.admin_univ.create');
-    Route::post('/admin/manage_admin_univ/store', [AdminUnivController::class, 'store'])->name('admin.admin_univ.store');
-    Route::post('/admin/manage_admin_univ/remove/{userId}', [AdminUnivController::class, 'removeAdminUniv'])->name('admin.admin_univ.remove');
+    Route::get('/admin/manage-admin-univ', [AdminUnivController::class, 'index'])->name('admin.admin_univ.index');
+    Route::get('/admin/manage-admin-univ/create', [AdminUnivController::class, 'create'])->name('admin.admin_univ.create');
+    Route::post('/admin/manage-admin-univ/store', [AdminUnivController::class, 'store'])->name('admin.admin_univ.store');
+    Route::post('/admin/manage-admin-univ/remove/{userId}', [AdminUnivController::class, 'removeAdminUniv'])->name('admin.admin_univ.remove');
 });
 
 Route::get('/info', [InformationController::class, 'guestIndex'])->name('guest.info.index');

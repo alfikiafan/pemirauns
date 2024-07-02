@@ -56,8 +56,7 @@
                             <h6 class="mb-0 text-sm">{{ $adminFakultas->email }}</h6>
                         </td>
                         <td>
-                            <p class="text-xs font-weight-bold mb-0">{{ $adminFakultas->pivot->faculty ?? 'N/A' }}
-                            </p>
+                            <p class="text-xs font-weight-bold mb-0">{{ $adminFakultas->pivot->faculty ?? 'N/A' }}</p>
                         </td>
                         <td>
                             <div class="d-flex align-items-center">

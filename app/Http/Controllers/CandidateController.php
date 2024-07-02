@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use App\Models\Candidate;
 use App\Models\Election;
 use App\Models\PresidentCandidate;
@@ -14,6 +15,7 @@ class CandidateController extends Controller
     public function index()
     {
         $candidates = Candidate::with(['presidentCandidate.user', 'vicePresidentCandidate.user', 'election'])->paginate(10);
+        View::share('showSearchBox', true);
         return view('admin.candidates.index', compact('candidates'));
     }
 

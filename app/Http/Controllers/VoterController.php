@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
 use App\Models\User;
 use App\Models\Role;
 use App\Mail\UserRejected;
-use Illuminate\Support\Facades\Mail;
 
 class VoterController extends Controller
 {
@@ -23,6 +24,7 @@ class VoterController extends Controller
             $query->where('user_status', '!=', 'approved')->orWhereNull('user_status');
         });
         $users = $query->paginate(10);
+        View::share('showSearchBox', true);
         return view('admin.users.index', compact('users', 'filter'));
     }
     

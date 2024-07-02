@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use App\Models\User;
 use App\Models\Role;
 
@@ -15,6 +16,20 @@ class AdminUnivController extends Controller
         $adminUnivs = $adminUnivRole ? $adminUnivRole->users : collect();
 
         $usersWithoutRole = User::whereDoesntHave('roles')->get();
+
+        View::share('showSearchBox', true);
+        $search = request()->query('search');
+
+        if ($search) {
+            $adminUnivs = User::where(function($query) use ($search) {
+                $query->where('name', 'LIKE', '%' . $search . '%')
+                      ->orWhere('id', 'LIKE', '%' . $search . '%')
+                      ->orWhere('email', 'LIKE', '%' . $search . '%')
+                      ->orWhere('nim', 'LIKE', '%' . $search . '%');
+            })->whereHas('roles', function($query) {
+                $query->where('name', 'admin_univ');
+            })->get();
+        }
 
         return view('admin.admin_univ.index', compact('adminUnivs', 'usersWithoutRole'));
     }

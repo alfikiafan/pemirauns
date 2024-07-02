@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Election;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+use App\Models\Election;
 
 class ElectionController extends Controller
 {
     public function index()
     {
         $elections = Election::paginate(10);
+        View::share('showSearchBox', true);
         return view('admin.election.index', ['elections' => $elections]);
     }
 
