@@ -16,6 +16,23 @@ class CandidateController extends Controller
     {
         $candidates = Candidate::with(['presidentCandidate.user', 'vicePresidentCandidate.user', 'election'])->paginate(10);
         View::share('showSearchBox', true);
+        $search = request()->query('search');
+
+        if ($search) {
+            $candidates = Candidate::whereHas('presidentCandidate.user', function($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%');
+                })
+                ->orWhereHas('vicePresidentCandidate.user', function($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%');
+                })
+                ->orWhereHas('election', function($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('faculty', 'LIKE', '%' . $search . '%');
+                })
+                ->with(['presidentCandidate.user', 'vicePresidentCandidate.user', 'election'])
+                ->paginate(10);
+        }
+
         return view('admin.candidates.index', compact('candidates'));
     }
 

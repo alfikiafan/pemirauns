@@ -13,7 +13,7 @@ class AdminFacultyController extends Controller
     public function index()
     {
         $adminFakultasRole = Role::where('name', 'admin_fakultas')->first();
-        $adminFakuls = $adminFakultasRole ? $adminFakultasRole->users : collect();
+        $adminFakuls = $adminFakultasRole ? $adminFakultasRole->users() : collect();
 
         $usersWithoutRole = User::whereDoesntHave('roles')->get();
 
@@ -21,22 +21,22 @@ class AdminFacultyController extends Controller
         $search = request()->query('search');
 
         if ($search) {
-            $adminFakuls = User::whereHas('roles', function($query) {
-                    $query->where('name', 'admin_fakultas');
-                })
-                ->where(function($query) use ($search) {
+            $adminFakuls = $adminFakuls->where(function($query) use ($search) {
                     $query->where('name', 'LIKE', '%' . $search . '%')
-                          ->orWhere('id', 'LIKE', '%' . $search . '%')
-                          ->orWhere('email', 'LIKE', '%' . $search . '%')
-                          ->orWhereHas('roles', function($query) use ($search) {
-                              $query->where('faculty', 'LIKE', '%' . $search . '%');
-                          })
-                          ->orWhere('nim', 'LIKE', '%' . $search . '%');
+                        ->orWhere('id', 'LIKE', '%' . $search . '%')
+                        ->orWhere('email', 'LIKE', '%' . $search . '%')
+                        ->orWhereHas('roles', function($query) use ($search) {
+                            $query->where('faculty', 'LIKE', '%' . $search . '%');
+                        })
+                        ->orWhere('nim', 'LIKE', '%' . $search . '%');
                 })
                 ->with(['roles' => function($query) use ($search) {
                     $query->where('faculty', 'LIKE', '%' . $search . '%');
                 }])
-                ->get();
+                ->paginate(10);
+        } else {
+            // Jika tidak ada pencarian, langsung paginasi tanpa perubahan query
+            $adminFakuls = $adminFakuls->paginate(10);
         }
 
         return view('admin.admin_faculty.index', compact('adminFakuls', 'usersWithoutRole'));

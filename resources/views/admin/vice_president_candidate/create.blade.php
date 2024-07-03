@@ -21,8 +21,8 @@
             <div class="mb-3">
                 <label for="vice_president_candidate_id" class="form-label">Nama</label>
                 <select id="vice_president_candidate_id" name="vice_president_candidate_id" class="form-select" required>
-                    @foreach ($users as $user)
-                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    @foreach ($vicePresidentCandidates as $candidate)
+                    <option value="{{ $candidate->id }}">{{ $candidate->name }}</option>
                     @endforeach
                 </select>
             </div>

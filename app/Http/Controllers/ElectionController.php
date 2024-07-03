@@ -12,10 +12,20 @@ class ElectionController extends Controller
     {
         $elections = Election::paginate(10);
         View::share('showSearchBox', true);
+
+        $search = request()->query('search');
+
+        if ($search) {
+            $elections = Election::where('name', 'LIKE', "%{$search}%")
+                ->orWhere('faculty', 'LIKE', "%{$search}%")
+                ->orWhere('start_date', 'LIKE', "%{$search}%")
+                ->orWhere('end_date', 'LIKE', "%{$search}%")
+                ->orWhere('description', 'LIKE', "%{$search}%")
+                ->paginate(10);
+        }
+
         return view('admin.election.index', ['elections' => $elections]);
     }
-
-
 
     public function create()
     {

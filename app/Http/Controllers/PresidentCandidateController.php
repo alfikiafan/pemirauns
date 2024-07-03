@@ -15,8 +15,23 @@ class PresidentCandidateController extends Controller
     public function index()
     {
         View::share('showSearchBox', true);
-        return view('admin.president_candidate.index',[
-            'presidentCandidates' => PresidentCandidate::paginate(10),
+
+        $search = request('search');
+
+        if ($search) {
+            $presidentCandidates = PresidentCandidate::whereHas('user', function($query) use ($search) {
+                    $query->where('name', 'like', '%'.$search.'%')
+                        ->orWhere('email', 'like', '%'.$search.'%')
+                        ->orWhere('nim', 'like', '%'.$search.'%');
+                })
+                ->orWhere('biography', 'like', '%'.$search.'%')
+                ->paginate(10);
+        } else {
+            $presidentCandidates = PresidentCandidate::paginate(10);
+        }
+
+        return view('admin.president_candidate.index', [
+            'presidentCandidates' => $presidentCandidates,
         ]);
     }
 
@@ -31,7 +46,6 @@ class PresidentCandidateController extends Controller
 
         return view('admin.president_candidate.create', [
             'presidentCandidates' => $presidentCandidates
-
         ]);
     }
 
@@ -94,11 +108,11 @@ class PresidentCandidateController extends Controller
     public function destroy(PresidentCandidate $presidentCandidate)
     {
         if ($presidentCandidate->candidates()->exists()) {
-            return redirect()->route('vice-president-candidate.index')->with('error', 'Candidate sedang Tergabung kedalam Pemilihan');
+            return redirect()->route('president-candidate.index')->with('error', 'Kandidat presiden sedang tergabung ke dalam pemilihan');
         }
 
         $presidentCandidate->delete();
 
-        return redirect()->route('vice-president-candidate.index')->with('success', 'Vice President Candidate deleted successfully!');
+        return redirect()->route('president-candidate.index')->with('success', 'President Candidate deleted successfully!');
     }
 }

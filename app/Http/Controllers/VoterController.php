@@ -25,6 +25,23 @@ class VoterController extends Controller
         });
         $users = $query->paginate(10);
         View::share('showSearchBox', true);
+
+        $search = request()->query('search');
+
+        if ($search) {
+            $users = User::whereDoesntHave('roles', function($query) use ($superadminRoleId) {
+                $query->where('role_id', $superadminRoleId);
+            })
+            ->where(function($query) use ($search) {
+                $query->where('name', 'LIKE', '%' . $search . '%')
+                      ->orWhere('id', 'LIKE', '%' . $search . '%')
+                      ->orWhere('email', 'LIKE', '%' . $search . '%')
+                      ->orWhere('nim', 'LIKE', '%' . $search . '%')
+                      ->orWhere('faculty', 'LIKE', '%' . $search . '%')
+                      ->orWhere('batch', 'LIKE', '%' . $search . '%');
+            })
+            ->paginate(10);
+        }
         return view('admin.users.index', compact('users', 'filter'));
     }
     

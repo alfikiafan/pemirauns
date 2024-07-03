@@ -1,3 +1,7 @@
+body {
+    overflow: hidden !important;
+}
+
 .nav-link.active .nav-link-text {
     color: black !important;
 }

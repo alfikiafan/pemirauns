@@ -15,8 +15,23 @@ class VicePresidentCandidateController extends Controller
     public function index()
     {
         View::share('showSearchBox', true);
-        return view('admin.vice_president_candidate.index',[
-            'vicePresidentCandidates' => VicePresidentCandidate::paginate(10),
+    
+        $search = request('search');
+    
+        if ($search) {
+            $vicePresidentCandidates = VicePresidentCandidate::whereHas('user', function($query) use ($search) {
+                    $query->where('name', 'like', '%'.$search.'%')
+                          ->orWhere('email', 'like', '%'.$search.'%')
+                          ->orWhere('nim', 'like', '%'.$search.'%');
+                })
+                ->orWhere('biography', 'like', '%'.$search.'%')
+                ->paginate(10);
+        } else {
+            $vicePresidentCandidates = VicePresidentCandidate::paginate(10);
+        }
+    
+        return view('admin.vice_president_candidate.index', [
+            'vicePresidentCandidates' => $vicePresidentCandidates,
         ]);
     }
 
@@ -31,7 +46,6 @@ class VicePresidentCandidateController extends Controller
 
         return view('admin.vice_president_candidate.create', [
             'vicePresidentCandidates' => $vicePresidentCandidates
-
         ]);
     }
 
@@ -94,7 +108,7 @@ class VicePresidentCandidateController extends Controller
     public function destroy(VicePresidentCandidate $vicePresidentCandidate)
 {
     if ($vicePresidentCandidate->candidates()->exists()) {
-        return redirect()->route('vice-president-candidate.index')->with('error', 'Candidate sedang Tergabung kedalam Pemilihan');
+        return redirect()->route('vice-president-candidate.index')->with('error', 'Kandidat presiden sedang tergabung ke dalam pemilihan');
     }
 
     $vicePresidentCandidate->delete();

@@ -24,14 +24,22 @@
                 <h6 class="m-0">Voter Monitoring</h6>
                 <p class="text-sm">See all voters in your unit</p>
             </div>
-            <div>
+            <div class="d-flex align-items-center">
+                <span class="me-2 text-sm">Pilih Status Akun:</span>
                 <form action="{{ route('admin.users.index') }}" method="GET">
-                    <select name="filter" class="form-control text-xs" onchange="this.form.submit();">
-                        <option value="">All Users</option>
-                        <option value="not_approved" {{ $filter == 'not_approved' ? 'selected' : '' }}>
-                            Not Approved
-                        </option>
-                    </select>
+                    <div class="position-relative">
+                        <select name="filter" class="form-control text-xs" onchange="this.form.submit();">
+                            <option value="">All Users</option>
+                            <option value="approved" {{ $filter == 'approved' ? 'selected' : '' }}>
+                                Approved
+                            <option value="not_approved" {{ $filter == 'not_approved' ? 'selected' : '' }}>
+                                Not Approved
+                            </option>
+                        </select>
+                        <span class="position-absolute top-50 end-5 translate-middle-y">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
+                    </div>
                 </form>
             </div>
         </div>
@@ -91,11 +99,16 @@
                             <form action="{{ route('admin.updateAccountStatus') }}" method="POST" id="status-form-{{ $voter->id }}" class="pe-3">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ $voter->id }}">
-                                <select name="user_status" class="form-control text-xs" required onchange="document.getElementById('status-form-{{ $voter->id }}').submit();">
-                                    <option value="">Select Status</option>
-                                    <option value="approved" {{ $voter->user_status == 'approved' ? 'selected' : '' }}>Approved</option>
-                                    <option value="rejected" {{ $voter->user_status == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                                </select>
+                                <div class="position-relative">
+                                    <select name="user_status" class="form-control text-xs" required onchange="document.getElementById('status-form-{{ $voter->id }}').submit();">
+                                        <option value="">Select Status</option>
+                                        <option value="approved" {{ $voter->user_status == 'approved' ? 'selected' : '' }}>Approved</option>
+                                        <option value="rejected" {{ $voter->user_status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                    </select>
+                                    <span class="position-absolute top-50 end-5 translate-middle-y">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </span>
+                                </div>
                             </form>
                         </td>
                     </tr>

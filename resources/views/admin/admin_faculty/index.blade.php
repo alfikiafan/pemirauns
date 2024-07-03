@@ -64,7 +64,7 @@
                                     method="POST"
                                     onsubmit="return confirm('Are you sure you want to remove this admin_fakultas?');">
                                     @csrf
-                                    <button type="submit" class="btn btn-action btn-danger mb-0 ms-1"
+                                    <button type="submit" class="btn btn-sm btn-action mb-0 ms-1 px-3 btn-danger"
                                         title="Remove this admin fakultas">
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -75,6 +75,34 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+        <div class="d-flex flex-column align-items-center my-4">
+            <div class="mb-2">
+                <p class="mb-0 text-sm">
+                    Showing {{ $adminFakuls->firstItem() }} to {{ $adminFakuls->lastItem() }} of {{ $adminFakuls->total() }} results
+                </p>
+            </div>
+            <div>
+                <ul class="pagination pagination-info justify-content-center mb-0">
+                    <li class="page-item{{ $adminFakuls->onFirstPage() ? ' disabled' : '' }}">
+                        <a class="page-link" href="{{ $adminFakuls->previousPageUrl() }}" aria-label="Previous">
+                            <span aria-hidden="true"><i class="fas fa-chevron-left" aria-hidden="true"></i></span>
+                        </a>
+                    </li>
+
+                    @for ($i = 1; $i <= $adminFakuls->lastPage(); $i++)
+                        <li class="page-item{{ $adminFakuls->currentPage() == $i ? ' active' : '' }}">
+                            <a class="page-link" href="{{ $adminFakuls->url($i) }}">{{ $i }}</a>
+                        </li>
+                    @endfor
+
+                    <li class="page-item{{ $adminFakuls->hasMorePages() ? '' : ' disabled' }}">
+                        <a class="page-link" href="{{ $adminFakuls->nextPageUrl() }}" aria-label="Next">
+                            <span aria-hidden="true"><i class="fas fa-chevron-right" aria-hidden="true"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

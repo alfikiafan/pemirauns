@@ -14,6 +14,19 @@ class InformationController extends Controller
     {
         $informations = Information::paginate(10);
         View::share('showSearchBox', true);
+
+        $search = request()->query('search');
+
+        if ($search) {
+            $informations = Information::where('title', 'LIKE', "%{$search}%")
+                ->orWhere('content', 'LIKE', "%{$search}%")
+                ->orWhere('publish_date', 'LIKE', "%{$search}%")
+                ->orWhereHas('user', function($query) use ($search) {
+                    $query->where('name', 'LIKE', "%{$search}%");
+                })
+                ->paginate(10);
+        }
+
         return view('admin.information.index', compact('informations'));
     }
 

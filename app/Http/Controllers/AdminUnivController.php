@@ -13,7 +13,7 @@ class AdminUnivController extends Controller
     public function index()
     {
         $adminUnivRole = Role::where('name', 'admin_univ')->first();
-        $adminUnivs = $adminUnivRole ? $adminUnivRole->users : collect();
+        $adminUnivs = $adminUnivRole ? $adminUnivRole->users() : collect();
 
         $usersWithoutRole = User::whereDoesntHave('roles')->get();
 
@@ -21,14 +21,15 @@ class AdminUnivController extends Controller
         $search = request()->query('search');
 
         if ($search) {
-            $adminUnivs = User::where(function($query) use ($search) {
-                $query->where('name', 'LIKE', '%' . $search . '%')
-                      ->orWhere('id', 'LIKE', '%' . $search . '%')
-                      ->orWhere('email', 'LIKE', '%' . $search . '%')
-                      ->orWhere('nim', 'LIKE', '%' . $search . '%');
-            })->whereHas('roles', function($query) {
-                $query->where('name', 'admin_univ');
-            })->get();
+            $adminUnivs = $adminUnivs->where(function($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('id', 'LIKE', '%' . $search . '%')
+                        ->orWhere('email', 'LIKE', '%' . $search . '%')
+                        ->orWhere('nim', 'LIKE', '%' . $search . '%');
+                })
+                ->paginate(10);
+        } else {
+            $adminUnivs = $adminUnivs->paginate(10);
         }
 
         return view('admin.admin_univ.index', compact('adminUnivs', 'usersWithoutRole'));
