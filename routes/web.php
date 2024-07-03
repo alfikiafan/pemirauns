@@ -38,7 +38,7 @@ Route::post('/update-status', [VoterController::class, 'updateAccountStatus'])->
 Route::get('/admin/election', [ElectionController::class, 'index'])->name('admin.election');
 Route::get('/admin/election/create', [ElectionController::class, 'create'])->name('admin.election.create');
 Route::post('/admin/election', [ElectionController::class, 'store'])->name('admin.election.store');
-Route::get('/admin/election/{id}', [ElectionController::class, 'view'])->name('admin.election.view');
+Route::get('/admin/election/{id}', [ElectionController::class, 'edit'])->name('admin.election.edit');
 Route::put('/admin/election/{id}', [ElectionController::class, 'update'])->name('admin.election.update');
 Route::delete('/admin/election/{id}', [ElectionController::class, 'delete'])->name('admin.election.delete');
 

@@ -24,7 +24,20 @@
                 </div>
                 <div class="form-group mb-3">
                     <label for="faculty">Fakultas</label>
-                    <input type="text" name="faculty" class="form-control" required>
+                    @php
+                    $user = Auth::user();
+                    $isAdminFakultas = $user && $user->hasRole('admin_fakultas');
+                    @endphp
+                    @if ($isAdminFakultas)
+                        <input type="text" name="faculty" class="form-control" value="{{ $user->faculty }}" required readonly>
+                    @else
+                        <select name="faculty" id="faculty" class="form-control" required>
+                            <option value="">Pilih Fakultas</option>
+                            @foreach ($faculties as $faculty)
+                                <option value="{{ $faculty }}">{{ $faculty }}</option>
+                            @endforeach
+                        </select>
+                    @endif
                 </div>
                 <div class="form-group mb-3">
                     <label for="start_date">Tanggal Dibuka</label>

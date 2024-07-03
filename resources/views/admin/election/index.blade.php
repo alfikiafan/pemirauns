@@ -56,7 +56,7 @@
                         </td>
                         <td>
                             <div class="d-flex align-items-center ps-3">
-                                <a href="{{ route('admin.election.view', $election->id) }}" class="me-2">
+                                <a href="{{ route('admin.election.edit', $election->id) }}" class="me-2">
                                 <button type="button" class="btn btn-sm btn-action btn-warning mb-0 me-1 px-3" title="Edit this candidate data">
                                     <i class="fas fa-pencil-alt"></i>
                                 </button>
