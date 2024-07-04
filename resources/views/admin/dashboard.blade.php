@@ -47,6 +47,22 @@
                                 </div>
                             </a>
                         </div>
+                        @foreach($candidates as candidate)
+                        @@php
+                            $totalVote = $Vote::where('candidate_id', $candidate->id)->count();
+                        @endphp
+                        <div class="col-md-4 mb-3">
+                            <a href="{{ route('admin.candidates.index') }}" class="text-decoration-none">
+                                <div class="card bg-primary">
+                                    <div class="card-header fw-bold">Total Vote Candidate</div>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-white">{{ $totalVote }}</h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        @endforeach
+                        
                         <div class="col-md-6 mb-3">
                             <a href="{{ route('admin.users.index', ['filter' => 'approved']) }}" class="text-decoration-none">
                                 <div class="card bg-primary">
