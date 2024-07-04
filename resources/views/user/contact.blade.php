@@ -12,7 +12,7 @@
                     </p>
                     <ul>
                         <li>Email: <a href="mailto:pemirauns@gmail.com">pemirauns@gmail.com</a></li>
-                        <li>WhatsApp: <a href="https://wa.me/08123456789" target="_blank">+62 812-3456-789</a></li>
+                        <li>WhatsApp: <a href="https://wa.me/6289655847696" target="_blank">+62 8965-5847-696</a></li>
                     </ul>
                 </div>
             </div>
