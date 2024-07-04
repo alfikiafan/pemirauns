@@ -47,10 +47,13 @@
                                 </div>
                             </a>
                         </div>
+                        @php
+                        $i = 1;
+                    @endphp
                         @foreach($candidates as $candidate)
                         @php
                             $totalVote = \App\Models\Vote::where('candidate_id', $candidate->id)->count();
-                            $i = 1;
+                           
                         @endphp
                         <div class="col-md-4 mb-3">
                             <a href="{{ route('admin.candidates.index') }}" class="text-decoration-none">
