@@ -18,9 +18,12 @@
                     <h6 class="m-0"> Vice President Candidates</h6>
                     <p class="text-sm">{{ $candidate->user->name }}</p>
                 </div>
+
                 <div class="ml-auto p-0">
+                @if(Auth::user()->hasRole('superadmin') || Auth::user()->hasRole('admin_univ') || Auth::user()->hasRole('admin_fakultas'))
                     <a href="{{ route('experience.create', $candidate->user_id) }}" class="btn bg-gradient-primary">Add Experience</a>
                     <a href="{{ route('achievement.create', $candidate->user_id) }}" class="btn bg-gradient-primary">Add Achievement</a>
+                @endif
                 </div>
             </div>
         </div>
@@ -44,12 +47,14 @@
                     <p class="mb-0 text-sm">{{ $exp->range }}</p>
                     <h5 class="mb-0 text-sm">Description</h5>
                     <p class="mb-2 text-sm">{{ $exp->description }}</p>
+                    @if(Auth::user()->hasRole('superadmin') || Auth::user()->hasRole('admin_univ') || Auth::user()->hasRole('admin_fakultas'))
                     <form action="{{ route('experience.destroy', ['id' => $candidate->id, 'experience' => $exp->id]) }}" method="POST" style="display: inline-block;">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm"onclick="return confirm('Are you sure you want to delete this experience?');">Delete</button>
                     </form>
                     <hr>
+                    @endif
                 @endforeach
             </div>
             <div>

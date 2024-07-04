@@ -36,7 +36,7 @@
                     @else
                         <div class="form-group mb-3">
                             <label for="faculty">Fakultas</label>
-                            <input type="text" name="faculty" class="form-control" value="{{ $election->faculty }}" required>
+                            <input type="text" name="faculty" class="form-control" value="{{ $user->faculty }}" required>
                         </div>
                     @endif
                 </div>
@@ -59,7 +59,7 @@
                     </div>
                 </div>
             </form>
-            
+
         </div>
     </div>
 @endsection
