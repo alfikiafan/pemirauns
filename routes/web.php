@@ -33,6 +33,8 @@ Route::middleware('auth', 'administrator')->group(function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 
+    Route::get('/admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
+
     Route::get('/admin/manage-user', [VoterController::class, 'index'])->name('admin.users.index');
     Route::post('/update-status', [VoterController::class, 'updateAccountStatus'])->name('admin.updateAccountStatus');
 

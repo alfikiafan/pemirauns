@@ -17,7 +17,15 @@ class VotingController extends Controller
         $activePemira = Election::where('start_date', '<=', now())
                                 ->where('end_date', '>=', now())
                                 ->first();
+        if(!$activePemira){
+            return redirect()->route('user.dashboard')->with('error', 'Tidak ada Pemira yang sedang berlangsung.');
+        }
+        
         $candidates = Candidate::where('election_id', $activePemira->id)->get();
+
+        if(sizeof($candidates) < 1){
+            return redirect()->route('user.dashboard')->with('error', 'Tidak ada Kandidat dalam Pemira ini.');
+        }
         
         return view('user.vote.index', ['candidates' => $candidates]);
     }
