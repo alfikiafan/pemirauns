@@ -26,6 +26,7 @@ class InformationController extends Controller
                 })
                 ->paginate(10);
         }
+        $informations->appends(['search' => $search]);
 
         return view('admin.information.index', compact('informations'));
     }

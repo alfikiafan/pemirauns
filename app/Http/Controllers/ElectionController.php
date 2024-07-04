@@ -18,6 +18,10 @@ class ElectionController extends Controller
             $electionsQuery->where('faculty', $user->faculty);
         }
 
+        if ($user && $user->hasRole('admin_univ')) {
+            $electionsQuery->where('faculty', 'Universitas');
+        }
+
         $search = request()->query('search');
         if ($search) {
             $electionsQuery->where(function ($query) use ($search) {
@@ -28,8 +32,8 @@ class ElectionController extends Controller
                     ->orWhere('description', 'LIKE', "%{$search}%");
             });
         }
-
         $elections = $electionsQuery->paginate(10);
+        $elections->appends(['search' => $search]);
         View::share('showSearchBox', true);
 
         return view('admin.election.index', ['elections' => $elections]);
@@ -37,7 +41,11 @@ class ElectionController extends Controller
 
     public function create()
     {
-        return view('admin.election.create');
+        $faculties = [
+            'FMIPA', 'FATISDA', 'FEB', 'FISIP', 'FT', 'FSRD', 'FK', 'FH', 'FKIP', 'FIB', 'FP', 'Psikologi', 'FKO'
+        ];
+
+        return view('admin.election.create', compact('faculties'));
     }
 
     public function store(Request $request)
@@ -71,6 +79,10 @@ class ElectionController extends Controller
 
         $user = Auth::user();
         if ($user && $user->hasRole('admin_fakultas') && $election->faculty != $user->faculty) {
+            return redirect()->route('admin.election')->withErrors('You do not have permission to edit this election');
+        }
+
+        if ($user && $user->hasRole('admin_univ') && $election->faculty != 'Universitas') {
             return redirect()->route('admin.election')->withErrors('You do not have permission to edit this election');
         }
 

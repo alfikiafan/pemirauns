@@ -26,21 +26,22 @@ class PresidentCandidateController extends Controller
                     $query->where('faculty', $faculty);
                 });
             });
-    
-            $search = request('search');
-            if ($search) {
-                $presidentCandidates->where(function ($query) use ($search) {
-                    $query->whereHas('user', function ($query) use ($search) {
-                        $query->where('name', 'like', '%' . $search . '%')
-                            ->orWhere('email', 'like', '%' . $search . '%')
-                            ->orWhere('nim', 'like', '%' . $search . '%');
-                    })
-                    ->orWhere('biography', 'like', '%' . $search . '%');
-                });
-            }
+        }
+
+        $search = request('search');
+        if ($search) {
+            $presidentCandidates->where(function ($query) use ($search) {
+                $query->whereHas('user', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%')
+                        ->orWhere('nim', 'like', '%' . $search . '%');
+                })
+                ->orWhere('biography', 'like', '%' . $search . '%');
+            });
         }
     
         $presidentCandidates = $presidentCandidates->paginate(10);
+        $presidentCandidates->appends(['search' => $search]);
         View::share('showSearchBox', true);
     
         return view('admin.president_candidate.index', [

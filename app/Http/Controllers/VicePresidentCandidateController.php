@@ -26,21 +26,23 @@ class VicePresidentCandidateController extends Controller
                     $query->where('faculty', $faculty);
                 });
             });
-    
-            $search = request('search');
-            if ($search) {
-                $vicePresidentCandidates->where(function ($query) use ($search) {
-                    $query->whereHas('user', function ($query) use ($search) {
-                        $query->where('name', 'like', '%' . $search . '%')
-                            ->orWhere('email', 'like', '%' . $search . '%')
-                            ->orWhere('nim', 'like', '%' . $search . '%');
-                    })
-                        ->orWhere('biography', 'like', '%' . $search . '%');
-                });
-            }
+        }
+
+        $search = request('search');
+        
+        if ($search) {
+            $vicePresidentCandidates->where(function ($query) use ($search) {
+                $query->whereHas('user', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%')
+                        ->orWhere('nim', 'like', '%' . $search . '%');
+                })
+                    ->orWhere('biography', 'like', '%' . $search . '%');
+            });
         }
     
         $vicePresidentCandidates = $vicePresidentCandidates->paginate(10);
+        $vicePresidentCandidates->appends(['search' => $search]);
         View::share('showSearchBox', true);
     
         return view('admin.vice_president_candidate.index', [

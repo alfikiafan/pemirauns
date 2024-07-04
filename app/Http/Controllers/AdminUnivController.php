@@ -32,6 +32,8 @@ class AdminUnivController extends Controller
             $adminUnivs = $adminUnivs->paginate(10);
         }
 
+        $adminUnivs->appends(['search' => $search]);
+
         return view('admin.admin_univ.index', compact('adminUnivs', 'usersWithoutRole'));
     }
 

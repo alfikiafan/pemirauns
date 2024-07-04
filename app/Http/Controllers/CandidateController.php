@@ -23,6 +23,10 @@ class CandidateController extends Controller
             $candidatesQuery = Candidate::whereHas('election', function ($query) use ($faculty) {
                 $query->where('faculty', $faculty);
             });
+        } elseif ($user && $user->hasRole('admin_univ')) {
+            $candidatesQuery = Candidate::whereHas('election', function ($query) {
+                $query->where('faculty', 'Universitas');
+            });
         } else {
             $candidatesQuery = Candidate::query();
         }
@@ -47,6 +51,7 @@ class CandidateController extends Controller
         $candidates = $candidatesQuery->with(['presidentCandidate.user', 'vicePresidentCandidate.user', 'election'])
                                     ->paginate(10);
 
+        $candidates->appends(['search' => $search]);
         View::share('showSearchBox', true);
 
         return view('admin.candidates.index', compact('candidates'));
@@ -63,6 +68,7 @@ class CandidateController extends Controller
                 ->whereHas('user', function ($query) use ($faculty) {
                     $query->where('faculty', $faculty);
                 })
+                ->whereDoesntHave('candidates')
                 ->orderBy('created_at', 'desc')
                 ->get();
     
@@ -70,13 +76,34 @@ class CandidateController extends Controller
                 ->whereHas('user', function ($query) use ($faculty) {
                     $query->where('faculty', $faculty);
                 })
+                ->whereDoesntHave('candidates')
                 ->orderBy('created_at', 'desc')
                 ->get();
     
             $elections = Election::where('faculty', $faculty)->get();
+        } elseif($user && $user->hasRole('admin_univ')) {
+            $presidentCandidates = PresidentCandidate::with('user')
+                ->whereDoesntHave('candidates')
+                ->orderBy('created_at', 'desc')
+                ->get();
+    
+            $vicePresidentCandidates = VicePresidentCandidate::with('user')
+                ->whereDoesntHave('candidates')
+                ->orderBy('created_at', 'desc')
+                ->get();
+    
+            $elections = Election::where('faculty', 'Universitas')->get();
         } else {
-            $presidentCandidates = PresidentCandidate::with('user')->orderBy('created_at', 'desc')->get();
-            $vicePresidentCandidates = VicePresidentCandidate::with('user')->orderBy('created_at', 'desc')->get();
+            $presidentCandidates = PresidentCandidate::with('user')
+                ->whereDoesntHave('candidates')
+                ->orderBy('created_at', 'desc')
+                ->get();
+    
+            $vicePresidentCandidates = VicePresidentCandidate::with('user')
+                ->whereDoesntHave('candidates')
+                ->orderBy('created_at', 'desc')
+                ->get();
+    
             $elections = Election::all();
         }
     
@@ -93,7 +120,14 @@ class CandidateController extends Controller
             'vision' => 'required|string',
             'mission' => 'required|string',
         ]);
-
+    
+        $presidentCandidateExists = Candidate::where('president_candidate_id', $request->input('president_candidate_id'))->exists();
+        $vicePresidentCandidateExists = Candidate::where('vice_president_candidate_id', $request->input('vice_president_candidate_id'))->exists();
+    
+        if ($presidentCandidateExists || $vicePresidentCandidateExists) {
+            return redirect()->route('admin.candidates.create')->withErrors('One of the candidates is already participating in another election.');
+        }
+    
         Candidate::create([
             'president_candidate_id' => $request->input('president_candidate_id'),
             'vice_president_candidate_id' => $request->input('vice_president_candidate_id'),
@@ -102,8 +136,8 @@ class CandidateController extends Controller
             'vision' => $request->input('vision'),
             'mission' => $request->input('mission'),
         ]);
-
-        return redirect()->route('admin.candidates.index')->with('success', 'Candidate berhasil ditambahkan.');
+    
+        return redirect()->route('admin.candidates.index')->with('success', 'Candidate successfully added.');
     }
 
     public function edit($id)
@@ -122,6 +156,12 @@ class CandidateController extends Controller
                 ->whereHas('user', function ($query) use ($faculty) {
                     $query->where('faculty', $faculty);
                 })
+                ->where(function ($query) use ($id) {
+                    $query->whereDoesntHave('candidates')
+                          ->orWhereHas('candidates', function ($query) use ($id) {
+                              $query->where('id', $id);
+                          });
+                })
                 ->orderBy('created_at', 'desc')
                 ->get();
     
@@ -129,13 +169,59 @@ class CandidateController extends Controller
                 ->whereHas('user', function ($query) use ($faculty) {
                     $query->where('faculty', $faculty);
                 })
+                ->where(function ($query) use ($id) {
+                    $query->whereDoesntHave('candidates')
+                          ->orWhereHas('candidates', function ($query) use ($id) {
+                              $query->where('id', $id);
+                          });
+                })
                 ->orderBy('created_at', 'desc')
                 ->get();
     
             $elections = Election::where('faculty', $faculty)->orderBy('name', 'asc')->get();
+        } elseif($user && $user->hasRole('admin_univ')) {
+            $presidentCandidates = PresidentCandidate::with('user')
+                ->where(function ($query) use ($id) {
+                    $query->whereDoesntHave('candidates')
+                          ->orWhereHas('candidates', function ($query) use ($id) {
+                              $query->where('id', $id);
+                          });
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
+    
+            $vicePresidentCandidates = VicePresidentCandidate::with('user')
+                ->where(function ($query) use ($id) {
+                    $query->whereDoesntHave('candidates')
+                          ->orWhereHas('candidates', function ($query) use ($id) {
+                              $query->where('id', $id);
+                          });
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
+    
+            $elections = Election::where('faculty', 'Universitas')->orderBy('name', 'asc')->get();
         } else {
-            $presidentCandidates = PresidentCandidate::with('user')->orderBy('created_at', 'desc')->get();
-            $vicePresidentCandidates = VicePresidentCandidate::with('user')->orderBy('created_at', 'desc')->get();
+            $presidentCandidates = PresidentCandidate::with('user')
+                ->where(function ($query) use ($id) {
+                    $query->whereDoesntHave('candidates')
+                          ->orWhereHas('candidates', function ($query) use ($id) {
+                              $query->where('id', $id);
+                          });
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
+    
+            $vicePresidentCandidates = VicePresidentCandidate::with('user')
+                ->where(function ($query) use ($id) {
+                    $query->whereDoesntHave('candidates')
+                          ->orWhereHas('candidates', function ($query) use ($id) {
+                              $query->where('id', $id);
+                          });
+                })
+                ->orderBy('created_at', 'desc')
+                ->get();
+    
             $elections = Election::orderBy('name', 'asc')->get();
         }
     
@@ -152,9 +238,21 @@ class CandidateController extends Controller
             'vision' => 'required|string',
             'mission' => 'required|string',
         ]);
-
+    
         $candidate = Candidate::findOrFail($id);
-
+    
+        $presidentCandidateExists = Candidate::where('president_candidate_id', $request->input('president_candidate_id'))
+            ->where('id', '!=', $id)
+            ->exists();
+    
+        $vicePresidentCandidateExists = Candidate::where('vice_president_candidate_id', $request->input('vice_president_candidate_id'))
+            ->where('id', '!=', $id)
+            ->exists();
+    
+        if ($presidentCandidateExists || $vicePresidentCandidateExists) {
+            return redirect()->route('admin.candidates.edit', $id)->withErrors('One of the candidates is already participating in another election.');
+        }
+    
         $candidate->update([
             'president_candidate_id' => $request->input('president_candidate_id'),
             'vice_president_candidate_id' => $request->input('vice_president_candidate_id'),
@@ -163,8 +261,8 @@ class CandidateController extends Controller
             'vision' => $request->input('vision'),
             'mission' => $request->input('mission'),
         ]);
-
-        return redirect()->route('admin.candidates.index')->with('success', 'Candidate berhasil diperbarui.');
+    
+        return redirect()->route('admin.candidates.index')->with('success', 'Candidate successfully updated.');
     }
 
     public function destroy(Candidate $candidate)

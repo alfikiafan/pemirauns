@@ -34,8 +34,8 @@
             <tr>
               <th class="text-secondary text-xxs font-weight-bolder pe-3">President Candidate</th>
               <th class="text-secondary text-xxs font-weight-bolder px-2">Vice President Candidate</th>
-              <th class="text-secondary text-xxs font-weight-bolder px-2">Election</th>
-              <th class="text-secondary text-xxs font-weight-bolder px-2">Faculty</th>
+              <th class="text-secondary text-xxs font-weight-bolder px-2">Pemira</th>
+              <th class="text-secondary text-xxs font-weight-bolder px-2">Unit Pemira</th>
               <th class="text-secondary text-xxs font-weight-bolder ps-3">Actions</th>
             </tr>
           </thead>

@@ -18,8 +18,8 @@
     <div class="card-header pb-0">
         <div class="d-flex align-items-center justify-content-between">
             <div>
-                <h6 class="m-0">Elections Table</h6>
-                <p class="text-sm">See all Elections in your unit</p>
+                <h6 class="m-0">Pemira</h6>
+                <p class="text-sm">Lihat semua pemira dari tahun ke tahun</p>
             </div>
             <div class="ml-auto p-0">
                 <a href="{{ route('admin.election.create') }}" class="btn bg-gradient-primary">Create

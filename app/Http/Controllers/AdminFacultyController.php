@@ -35,9 +35,10 @@ class AdminFacultyController extends Controller
                 }])
                 ->paginate(10);
         } else {
-            // Jika tidak ada pencarian, langsung paginasi tanpa perubahan query
             $adminFakuls = $adminFakuls->paginate(10);
         }
+
+        $adminFakuls->appends(['search' => $search]);
 
         return view('admin.admin_faculty.index', compact('adminFakuls', 'usersWithoutRole'));
     }
