@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AchievementController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
@@ -13,8 +14,11 @@ use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\AdminFacultyController;
+use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\PresidentCandidateController;
 use App\Http\Controllers\VicePresidentCandidateController;
+use App\Models\Achievement;
+use App\Models\Experience;
 
 Route::get('/', [LandingController::class, 'index'])->name('guest.landing');
 
@@ -47,7 +51,11 @@ Route::middleware('auth', 'administrator')->group(function () {
     Route::delete('/admin/candidate/{candidate}', [CandidateController::class, 'destroy'])->name('admin.candidates.destroy');
 
     Route::resource('/admin/president-candidate', PresidentCandidateController::class);
+    Route::resource('/admin/president-candidate/{id}/experience', ExperienceController::class);
+    Route::resource('/admin/president-candidate/{id}/achievement', AchievementController::class);
     Route::resource('/admin/vice-president-candidate', VicePresidentCandidateController::class);
+    Route::resource('/admin/vice-president-candidate/{id}/experience', ExperienceController::class);
+    Route::resource('/admin/vice-president-candidate/{id}/achievement', AchievementController::class);
 
     Route::resource('/admin/information', InformationController::class);
     Route::get('/admin/information', [InformationController::class, 'index'])->name('admin.information.index');

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Achievement;
+use App\Models\Experience;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -17,10 +19,10 @@ class PresidentCandidateController extends Controller
     {
         $user = Auth::user();
         $presidentCandidates = PresidentCandidate::query();
-    
+
         if ($user && $user->hasRole('admin_fakultas')) {
             $faculty = $user->faculty;
-    
+
             $presidentCandidates->whereHas('user', function ($query) use ($faculty) {
                 $query->whereHas('roles', function ($query) use ($faculty) {
                     $query->where('faculty', $faculty);
@@ -39,15 +41,15 @@ class PresidentCandidateController extends Controller
                 ->orWhere('biography', 'like', '%' . $search . '%');
             });
         }
-    
+
         $presidentCandidates = $presidentCandidates->paginate(10);
         $presidentCandidates->appends(['search' => $search]);
         View::share('showSearchBox', true);
-    
+
         return view('admin.president_candidate.index', [
             'presidentCandidates' => $presidentCandidates,
         ]);
-    }    
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -56,10 +58,10 @@ class PresidentCandidateController extends Controller
     {
         $user = Auth::user();
         $presidentCandidates = User::whereDoesntHave('presidentCandidates');
-    
+
         if ($user && $user->hasRole('admin_fakultas')) {
             $faculty = $user->faculty;
-    
+
             $presidentCandidates->whereHas('roles', function ($query) use ($faculty) {
                 $query->where('faculty', $faculty);
             })
@@ -67,13 +69,13 @@ class PresidentCandidateController extends Controller
             ->whereDoesntHave('vicePresidentCandidates')
             ->orderBy('name', 'asc');
         }
-    
+
         $presidentCandidates = $presidentCandidates->get();
-    
+
         return view('admin.president_candidate.create', [
             'presidentCandidates' => $presidentCandidates,
         ]);
-    }    
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -100,8 +102,13 @@ class PresidentCandidateController extends Controller
     public function show(PresidentCandidate $presidentCandidate)
     {
         // dd($presidentCandidate);
+        $experience = Experience::where('user_id', $presidentCandidate->user_id)->get();
+        $achievments = Achievement::where('user_id', $presidentCandidate->user_id)->get();
+        // dd($experience);
         return view('admin.president_candidate.detail',[
-            'candidate' => $presidentCandidate
+            'candidate' => $presidentCandidate,
+            'experience' => $experience,
+            'achievments' => $achievments
         ]);
     }
 
@@ -116,12 +123,12 @@ class PresidentCandidateController extends Controller
                 return redirect()->route('president-candidate.index')->withErrors('Anda tidak memiliki akses untuk mengedit kandidat ini.');
             }
         }
-    
+
         return view('admin.president_candidate.edit', [
             'presidentCandidate' => $presidentCandidate,
         ]);
     }
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -150,13 +157,13 @@ class PresidentCandidateController extends Controller
                 return redirect()->route('president-candidate.index')->withErrors('Anda tidak memiliki akses untuk menghapus kandidat ini.');
             }
         }
-    
+
         if ($presidentCandidate->candidates()->exists()) {
             return redirect()->route('president-candidate.index')->with('error', 'Kandidat presiden sedang tergabung ke dalam pemilihan');
         }
-    
+
         $presidentCandidate->delete();
-    
+
         return redirect()->route('president-candidate.index')->with('success', 'President Candidate deleted successfully!');
-    }    
+    }
 }

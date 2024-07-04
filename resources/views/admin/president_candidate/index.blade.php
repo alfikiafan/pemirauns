@@ -50,25 +50,21 @@
             <td>
               <h6 class="mb-0 text-sm">{{ $candidate->user->faculty ?? 'N/A' }}</h6>
             <td>
-              <div class="d-flex align-items-center">
-                <a href="{{ route('president-candidate.show', $candidate) }}" class="me-2 badge bg-info">
-                    <i class="fas fa-eye"></i>
-                </a>
-                <a href="{{ route('president-candidate.edit', $candidate) }}" class="me-2 badge bg-warning">
-                    <i class="fas fa-pencil-alt"></i>
-                <a href="{{ route('president-candidate.edit', $candidate) }}">
-                    <button type="button" class="btn btn-sm btn-action btn-warning mb-0 me-1 px-3" title="Edit this candidate data">
-                      <i class="fas fa-pencil-alt"></i>
-                    </button>
-                </a>
-                <form action="{{ route('president-candidate.destroy', $candidate) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this candidate data?');">
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="btn btn-sm btn-action mb-0 ms-1 px-3 btn-danger" title="Delete this candidate data">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </form>
-              </div>
+                <div class="d-flex align-items-center">
+                    <a href="{{ route('president-candidate.show', $candidate) }}" class="me-2 badge bg-info">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                    <a href="{{ route('president-candidate.edit', $candidate) }}" class="me-2 badge bg-warning">
+                          <i class="fas fa-pencil-alt"></i>
+                    </a>
+                    <form action="{{ route('president-candidate.destroy', $candidate) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this candidate data?');">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="badge btn-sm btn-action btn-sm bg-danger border-0" title="Delete this candidate data">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </form>
+                </div>
             </td>
           </tr>
           @endforeach

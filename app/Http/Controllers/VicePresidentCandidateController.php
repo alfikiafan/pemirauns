@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\VicePresidentCandidate;
 use App\Models\User;
+use App\Models\Achievement;
+use App\Models\Experience;
 
 class VicePresidentCandidateController extends Controller
 {
@@ -17,10 +19,10 @@ class VicePresidentCandidateController extends Controller
     {
         $user = Auth::user();
         $vicePresidentCandidates = VicePresidentCandidate::query();
-    
+
         if ($user && $user->hasRole('admin_fakultas')) {
             $faculty = $user->faculty;
-    
+
             $vicePresidentCandidates->whereHas('user', function ($query) use ($faculty) {
                 $query->whereHas('roles', function ($query) use ($faculty) {
                     $query->where('faculty', $faculty);
@@ -29,7 +31,7 @@ class VicePresidentCandidateController extends Controller
         }
 
         $search = request('search');
-        
+
         if ($search) {
             $vicePresidentCandidates->where(function ($query) use ($search) {
                 $query->whereHas('user', function ($query) use ($search) {
@@ -40,15 +42,15 @@ class VicePresidentCandidateController extends Controller
                     ->orWhere('biography', 'like', '%' . $search . '%');
             });
         }
-    
+
         $vicePresidentCandidates = $vicePresidentCandidates->paginate(10);
         $vicePresidentCandidates->appends(['search' => $search]);
         View::share('showSearchBox', true);
-    
+
         return view('admin.vice_president_candidate.index', [
             'vicePresidentCandidates' => $vicePresidentCandidates,
         ]);
-    }    
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -58,7 +60,7 @@ class VicePresidentCandidateController extends Controller
         $user = Auth::user();
         if ($user && $user->hasRole('admin_fakultas')) {
             $faculty = $user->faculty;
-    
+
             $vicePresidentCandidates = User::whereDoesntHave('vicePresidentCandidates')
                 ->whereHas('roles', function ($query) use ($faculty) {
                     $query->where('faculty', $faculty);
@@ -72,7 +74,7 @@ class VicePresidentCandidateController extends Controller
                 ->orderBy('name', 'asc')
                 ->get();
         }
-    
+
         return view('admin.vice_president_candidate.create', [
             'vicePresidentCandidates' => $vicePresidentCandidates,
         ]);
@@ -102,7 +104,15 @@ class VicePresidentCandidateController extends Controller
      */
     public function show(VicePresidentCandidate $vicePresidentCandidate)
     {
-        //
+        // dd($presidentCandidate);
+        $experience = Experience::where('user_id', $vicePresidentCandidate->user_id)->get();
+        $achievments = Achievement::where('user_id', $vicePresidentCandidate->user_id)->get();
+        // dd($experience);
+        return view('admin.vice_president_candidate.detail',[
+            'candidate' => $vicePresidentCandidate,
+            'experience' => $experience,
+            'achievments' => $achievments
+        ]);
     }
 
     /**
@@ -116,7 +126,7 @@ class VicePresidentCandidateController extends Controller
                 return redirect()->route('vice-president-candidate.index')->withErrors('Anda tidak memiliki akses untuk mengedit kandidat ini.');
             }
         }
-    
+
         return view('admin.vice_president_candidate.edit', [
             'vicePresidentCandidate' => $vicePresidentCandidate,
         ]);
@@ -149,13 +159,13 @@ class VicePresidentCandidateController extends Controller
                 return redirect()->route('vice-president-candidate.index')->withErrors('Anda tidak memiliki akses untuk menghapus kandidat ini.');
             }
         }
-    
+
         if ($vicePresidentCandidate->candidates()->exists()) {
             return redirect()->route('vice-president-candidate.index')->with('error', 'Kandidat vice presiden sedang tergabung ke dalam pemilihan');
         }
-    
+
         $vicePresidentCandidate->delete();
-    
+
         return redirect()->route('vice-president-candidate.index')->with('success', 'Vice President Candidate deleted successfully!');
     }
 }
