@@ -50,17 +50,21 @@
                         @foreach($candidates as $candidate)
                         @php
                             $totalVote = \App\Models\Vote::where('candidate_id', $candidate->id)->count();
+                            $i = 1;
                         @endphp
                         <div class="col-md-4 mb-3">
                             <a href="{{ route('admin.candidates.index') }}" class="text-decoration-none">
                                 <div class="card bg-primary">
-                                    <div class="card-header fw-bold">Total Vote Candidate</div>
+                                    <div class="card-header fw-bold">Total Vote Kandidat {{ $i }}</div>
                                     <div class="card-body">
                                         <h5 class="card-title text-white">{{ $totalVote }}</h5>
                                     </div>
                                 </div>
                             </a>
                         </div>
+                        @php
+                            $i++;
+                        @endphp
                     @endforeach
                     
 
