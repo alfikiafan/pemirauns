@@ -47,7 +47,7 @@
                                 </div>
                             </a>
                         </div>
-                        @foreach($candidates as candidate)
+                        {{-- @foreach($candidates as candidate)
                         @php
                             $totalVote = $Vote::where('candidate_id', $candidate->id)->count();
                         @endphp
@@ -61,7 +61,7 @@
                                 </div>
                             </a>
                         </div>
-                        @endforeach
+                        @endforeach --}}
 
                         <div class="col-md-6 mb-3">
                             <a href="{{ route('admin.users.index', ['filter' => 'approved']) }}" class="text-decoration-none">
