@@ -18,6 +18,10 @@ class VotingController extends Controller
                                 ->where('end_date', '>=', now())
                                 ->first();
         $candidates = Candidate::where('election_id', $activePemira->id)->get();
+
+        if(sizeof($candidates) < 1){
+            return redirect()->route('user.dashboard')->with('error', 'Tidak ada Kandidat dalam Pemira ini.');
+        }
         
         return view('user.vote.index', ['candidates' => $candidates]);
     }
