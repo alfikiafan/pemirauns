@@ -15,11 +15,14 @@ class Election extends Model
         'description',
         'start_date',
         'end_date',
-
     ];
 
     public function candidates(){
         return $this->hasMany(Candidate::class);
     }
 
+    public function votes()
+    {
+        return $this->hasManyThrough(Vote::class, Candidate::class);
+    }
 }

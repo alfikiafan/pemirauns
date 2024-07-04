@@ -29,10 +29,6 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth', 'administrator')->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-
     Route::get('/admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
 
     Route::get('/admin/manage-user', [VoterController::class, 'index'])->name('admin.users.index');
@@ -80,10 +76,7 @@ Route::middleware('auth', 'administrator')->group(function () {
 });
 
 Route::middleware('auth', 'voter')->group(function () {
-    Route::get('/user/dashboard', function () {
-        return view('user.dashboard');
-    })->name('user.dashboard');
-
+    Route::get('/user/dashboard', [DashboardController::class, 'dashboard'])->name('user.dashboard');
     Route::get('/user/contact', [ContactController::class, 'showForm'])->name('user.contact');
     Route::get('/user/vote',[VotingController::class, 'index'])->name('user.vote');
     Route::get('/user/vote/{id}',[VotingController::class, 'view'])->name('user.vote.view');
