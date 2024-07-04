@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use App\Models\User;
 use App\Models\Role;
 
@@ -12,9 +13,32 @@ class AdminFacultyController extends Controller
     public function index()
     {
         $adminFakultasRole = Role::where('name', 'admin_fakultas')->first();
-        $adminFakuls = $adminFakultasRole ? $adminFakultasRole->users : collect();
+        $adminFakuls = $adminFakultasRole ? $adminFakultasRole->users() : collect();
 
         $usersWithoutRole = User::whereDoesntHave('roles')->get();
+
+        View::share('showSearchBox', true);
+        $search = request()->query('search');
+
+        if ($search) {
+            $adminFakuls = $adminFakuls->where(function($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search . '%')
+                        ->orWhere('id', 'LIKE', '%' . $search . '%')
+                        ->orWhere('email', 'LIKE', '%' . $search . '%')
+                        ->orWhereHas('roles', function($query) use ($search) {
+                            $query->where('faculty', 'LIKE', '%' . $search . '%');
+                        })
+                        ->orWhere('nim', 'LIKE', '%' . $search . '%');
+                })
+                ->with(['roles' => function($query) use ($search) {
+                    $query->where('faculty', 'LIKE', '%' . $search . '%');
+                }])
+                ->paginate(10);
+        } else {
+            $adminFakuls = $adminFakuls->paginate(10);
+        }
+
+        $adminFakuls->appends(['search' => $search]);
 
         return view('admin.admin_faculty.index', compact('adminFakuls', 'usersWithoutRole'));
     }

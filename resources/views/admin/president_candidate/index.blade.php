@@ -1,9 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-@if (session('error'))
+@if ($errors->any())
     <div class="alert alert-danger">
-        {{ session('error') }}
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
 @elseif (session('success'))
     <div class="alert alert-success" id="success-message">
@@ -28,8 +32,9 @@
       <table class="table align-items-center mb-0">
         <thead>
           <tr>
-            <th class="text-secondary text-xxs font-weight-bolder px-2">President Candidate Name</th>
+            <th class="text-secondary text-xxs font-weight-bolder px-2">Name</th>
             <th class="text-secondary text-xxs font-weight-bolder px-2">Biography</th>
+            <th class="text-secondary text-xxs font-weight-bolder px-2">Faculty</th>
             <th class="text-secondary text-xxs font-weight-bolder px-2">Action</th>
           </tr>
         </thead>
@@ -43,17 +48,23 @@
               <h6 class="mb-0 text-sm" style="white-space: pre-wrap; word-wrap: break-word;">{{ $candidate->biography ?? 'N/A' }}</h6>
             </td>
             <td>
+              <h6 class="mb-0 text-sm">{{ $candidate->user->faculty ?? 'N/A' }}</h6>
+            <td>
               <div class="d-flex align-items-center">
                 <a href="{{ route('president-candidate.show', $candidate) }}" class="me-2 badge bg-info">
                     <i class="fas fa-eye"></i>
                 </a>
                 <a href="{{ route('president-candidate.edit', $candidate) }}" class="me-2 badge bg-warning">
                     <i class="fas fa-pencil-alt"></i>
+                <a href="{{ route('president-candidate.edit', $candidate) }}">
+                    <button type="button" class="btn btn-sm btn-action btn-warning mb-0 me-1 px-3" title="Edit this candidate data">
+                      <i class="fas fa-pencil-alt"></i>
+                    </button>
                 </a>
                 <form action="{{ route('president-candidate.destroy', $candidate) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this candidate data?');">
                   @csrf
                   @method('DELETE')
-                  <button type="submit" class="badge btn-action mb-0 ms-1 bg-danger" title="Delete this candidate data" style="border: 0px">
+                  <button type="submit" class="btn btn-sm btn-action mb-0 ms-1 px-3 btn-danger" title="Delete this candidate data">
                     <i class="fas fa-trash"></i>
                   </button>
                 </form>

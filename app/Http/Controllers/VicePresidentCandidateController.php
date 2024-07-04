@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\View;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\VicePresidentCandidate;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class VicePresidentCandidateController extends Controller
 {
@@ -13,23 +15,66 @@ class VicePresidentCandidateController extends Controller
      */
     public function index()
     {
-        return view('admin.vice_president_candidate.index',[
-            'vicePresidentCandidates' => VicePresidentCandidate::paginate(10),
+        $user = Auth::user();
+        $vicePresidentCandidates = VicePresidentCandidate::query();
+    
+        if ($user && $user->hasRole('admin_fakultas')) {
+            $faculty = $user->faculty;
+    
+            $vicePresidentCandidates->whereHas('user', function ($query) use ($faculty) {
+                $query->whereHas('roles', function ($query) use ($faculty) {
+                    $query->where('faculty', $faculty);
+                });
+            });
+        }
+
+        $search = request('search');
+        
+        if ($search) {
+            $vicePresidentCandidates->where(function ($query) use ($search) {
+                $query->whereHas('user', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%')
+                        ->orWhere('nim', 'like', '%' . $search . '%');
+                })
+                    ->orWhere('biography', 'like', '%' . $search . '%');
+            });
+        }
+    
+        $vicePresidentCandidates = $vicePresidentCandidates->paginate(10);
+        $vicePresidentCandidates->appends(['search' => $search]);
+        View::share('showSearchBox', true);
+    
+        return view('admin.vice_president_candidate.index', [
+            'vicePresidentCandidates' => $vicePresidentCandidates,
         ]);
-    }
+    }    
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $vicePresidentCandidates = User::whereDoesntHave('vicePresidentCandidates')
-        ->orderBy('name', 'asc')
-        ->get();
-
+        $user = Auth::user();
+        if ($user && $user->hasRole('admin_fakultas')) {
+            $faculty = $user->faculty;
+    
+            $vicePresidentCandidates = User::whereDoesntHave('vicePresidentCandidates')
+                ->whereHas('roles', function ($query) use ($faculty) {
+                    $query->where('faculty', $faculty);
+                })
+                ->where('id', '!=', $user->id)
+                ->whereDoesntHave('presidentCandidates')
+                ->orderBy('name', 'asc')
+                ->get();
+        } else {
+            $vicePresidentCandidates = User::whereDoesntHave('vicePresidentCandidates')
+                ->orderBy('name', 'asc')
+                ->get();
+        }
+    
         return view('admin.vice_president_candidate.create', [
-            'vicePresidentCandidates' => $vicePresidentCandidates
-
+            'vicePresidentCandidates' => $vicePresidentCandidates,
         ]);
     }
 
@@ -65,7 +110,14 @@ class VicePresidentCandidateController extends Controller
      */
     public function edit(VicePresidentCandidate $vicePresidentCandidate)
     {
-        return view('admin.vice_president_candidate.edit',[
+        $user = Auth::user();
+        if ($user && $user->hasRole('admin_fakultas')) {
+            if ($vicePresidentCandidate->user->faculty != $user->faculty && !$user->hasRole('superadmin')) {
+                return redirect()->route('vice-president-candidate.index')->withErrors('Anda tidak memiliki akses untuk mengedit kandidat ini.');
+            }
+        }
+    
+        return view('admin.vice_president_candidate.edit', [
             'vicePresidentCandidate' => $vicePresidentCandidate,
         ]);
     }
@@ -90,13 +142,20 @@ class VicePresidentCandidateController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(VicePresidentCandidate $vicePresidentCandidate)
-{
-    if ($vicePresidentCandidate->candidates()->exists()) {
-        return redirect()->route('vice-president-candidate.index')->with('error', 'Candidate sedang Tergabung kedalam Pemilihan');
+    {
+        $user = Auth::user();
+        if ($user && $user->hasRole('admin_fakultas')) {
+            if ($vicePresidentCandidate->user->faculty != $user->faculty) {
+                return redirect()->route('vice-president-candidate.index')->withErrors('Anda tidak memiliki akses untuk menghapus kandidat ini.');
+            }
+        }
+    
+        if ($vicePresidentCandidate->candidates()->exists()) {
+            return redirect()->route('vice-president-candidate.index')->with('error', 'Kandidat vice presiden sedang tergabung ke dalam pemilihan');
+        }
+    
+        $vicePresidentCandidate->delete();
+    
+        return redirect()->route('vice-president-candidate.index')->with('success', 'Vice President Candidate deleted successfully!');
     }
-
-    $vicePresidentCandidate->delete();
-
-    return redirect()->route('vice-president-candidate.index')->with('success', 'Vice President Candidate deleted successfully!');
-}
 }

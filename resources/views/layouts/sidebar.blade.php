@@ -1,4 +1,3 @@
-<!-- Sidebar -->
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl fixed-start bg-gradient-primary"
     id="sidenav-main" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
     <div class="sidenav-header">
@@ -33,7 +32,7 @@
                     class="nav-link-text ms-2 ps-4 text-uppercase text-xs font-weight-bolder text-white">Administrator</span>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin.admin_univ.index') ? 'active' : '' }}"
+                <a class="nav-link {{ Request::is('admin/manage-admin-univ*') ? 'active' : '' }}"
                     href="{{ route('admin.admin_univ.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -45,7 +44,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin.admin_faculty.index') ? 'active' : '' }}"
+                <a class="nav-link {{ Request::is('admin/manage-admin-fakultas*') ? 'active' : '' }}"
                     href="{{ route('admin.admin_faculty.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -57,7 +56,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin.users.index') ? 'active' : '' }}"
+                <a class="nav-link {{ Request::is('admin/manage-user*') ? 'active' : '' }}"
                     href="{{ route('admin.users.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -67,6 +66,10 @@
                     </div>
                     <span class="nav-link-text ms-1 text-white">Voter</span>
                 </a>
+            </li>
+            <li class="nav-item mt-1">
+                <span
+                    class="nav-link-text ms-2 ps-4 text-uppercase text-xs font-weight-bolder text-white">Candidates</span>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('admin/candidate*') ? 'active' : '' }}"
@@ -81,7 +84,35 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin.election') ? 'active' : '' }}"
+                <a class="nav-link {{ Request::is('admin/president-candidate*') ? 'active' : '' }}"
+                    href="{{ route('president-candidate.index') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1rem;"
+                            class="fas fa-lg fa-user ps-2 pe-2 text-center {{ Request::is('admin/president-candidate*') ? 'text-white' : 'text-dark' }}"
+                            aria-hidden="true"></i>
+                    </div>
+                    <span class="nav-link-text ms-1 text-white">President Candidate</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link me-2 {{ Request::is('admin/vice-president-candidate*') ? 'active' : '' }}"
+                    href="{{ route('vice-president-candidate.index') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1rem;"
+                            class="fas fa-lg fa-user ps-2 pe-2 text-center {{ Request::is('admin/vice-president-candidate*') ? 'text-white' : 'text-dark' }}"
+                            aria-hidden="true"></i>
+                    </div>
+                    <span class="nav-link-text ms-1 text-white">Vice President Candidate</span>
+                </a>
+            </li>
+            <li class="nav-item mt-1">
+                <span
+                    class="nav-link-text ms-2 ps-4 text-uppercase text-xs font-weight-bolder text-white">Election</span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('admin/election*') ? 'active' : '' }}"
                     href="{{ route('admin.election') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -91,6 +122,10 @@
                     </div>
                     <span class="nav-link-text ms-1 text-white">Election</span>
                 </a>
+            </li>
+            <li class="nav-item mt-1">
+                <span
+                    class="nav-link-text ms-2 ps-4 text-uppercase text-xs font-weight-bolder text-white">Information</span>
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('admin/information*') ? 'active' : '' }}"
@@ -104,30 +139,6 @@
                     <span class="nav-link-text ms-1 text-white">Information</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin/president-candidate*') ? 'active' : '' }}"
-                    href="{{ route('president-candidate.index') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;"
-                            class="fas fa-lg fa-info-circle ps-2 pe-2 text-center {{ Request::is('admin/president-candidate*') ? 'text-white' : 'text-dark' }}"
-                            aria-hidden="true"></i>
-                    </div>
-                    <span class="nav-link-text ms-1 text-white">President Candidate</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin/vice-president-candidate*') ? 'active' : '' }}"
-                    href="{{ route('vice-president-candidate.index') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;"
-                            class="fas fa-lg fa-info-circle ps-2 pe-2 text-center {{ Request::is('admin/vice-president-candidate*') ? 'text-white' : 'text-dark' }}"
-                            aria-hidden="true"></i>
-                    </div>
-                    <span class="nav-link-text ms-1 text-white">Vice President Candidate</span>
-                </a>
-            </li>
             @endif
 
             @if (Auth::check() && (Auth::user()->hasRole('admin_univ') || Auth::user()->hasRole('admin_fakultas')))
@@ -135,7 +146,7 @@
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder text-white">Admin Pemira</h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin.dashboard') ? 'active' : '' }}"
+                <a class="nav-link {{ Request::is('admin/dashboard*') ? 'active' : '' }}"
                     href="{{ route('admin.dashboard') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -147,7 +158,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin.users.index') ? 'active' : '' }}"
+                <a class="nav-link {{ Request::is('admin/manage-user*') ? 'active' : '' }}"
                     href="{{ route('admin.users.index') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -171,7 +182,31 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin.election') ? 'active' : '' }}"
+                <a class="nav-link {{ Request::is('admin/president-candidate*') ? 'active' : '' }}"
+                    href="{{ route('president-candidate.index') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1rem;"
+                            class="fas fa-lg fa-user ps-2 pe-2 text-center {{ Request::is('admin/president-candidate*') ? 'text-white' : 'text-dark' }}"
+                            aria-hidden="true"></i>
+                    </div>
+                    <span class="nav-link-text ms-1 text-white">President Candidate</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link me-2 {{ Request::is('admin/vice-president-candidate*') ? 'active' : '' }}"
+                    href="{{ route('vice-president-candidate.index') }}">
+                    <div
+                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1rem;"
+                            class="fas fa-lg fa-user ps-2 pe-2 text-center {{ Request::is('admin/vice-president-candidate*') ? 'text-white' : 'text-dark' }}"
+                            aria-hidden="true"></i>
+                    </div>
+                    <span class="nav-link-text ms-1 text-white">Vice President Candidate</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('admin/election*') ? 'active' : '' }}"
                     href="{{ route('admin.election') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">

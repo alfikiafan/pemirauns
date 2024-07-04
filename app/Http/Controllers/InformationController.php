@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use App\Models\Information;
 use Carbon\Carbon;
@@ -12,6 +13,21 @@ class InformationController extends Controller
     public function index()
     {
         $informations = Information::paginate(10);
+        View::share('showSearchBox', true);
+
+        $search = request()->query('search');
+
+        if ($search) {
+            $informations = Information::where('title', 'LIKE', "%{$search}%")
+                ->orWhere('content', 'LIKE', "%{$search}%")
+                ->orWhere('publish_date', 'LIKE', "%{$search}%")
+                ->orWhereHas('user', function($query) use ($search) {
+                    $query->where('name', 'LIKE', "%{$search}%");
+                })
+                ->paginate(10);
+        }
+        $informations->appends(['search' => $search]);
+
         return view('admin.information.index', compact('informations'));
     }
 

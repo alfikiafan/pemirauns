@@ -2,25 +2,54 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Election;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Election;
 
 class ElectionController extends Controller
 {
     public function index()
     {
-        $elections = Election::paginate(10);
+        $user = Auth::user();
+        $electionsQuery = Election::query();
+
+        if ($user && $user->hasRole('admin_fakultas')) {
+            $electionsQuery->where('faculty', $user->faculty);
+        }
+
+        if ($user && $user->hasRole('admin_univ')) {
+            $electionsQuery->where('faculty', 'Universitas');
+        }
+
+        $search = request()->query('search');
+        if ($search) {
+            $electionsQuery->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('faculty', 'LIKE', "%{$search}%")
+                    ->orWhere('start_date', 'LIKE', "%{$search}%")
+                    ->orWhere('end_date', 'LIKE', "%{$search}%")
+                    ->orWhere('description', 'LIKE', "%{$search}%");
+            });
+        }
+        $elections = $electionsQuery->paginate(10);
+        $elections->appends(['search' => $search]);
+        View::share('showSearchBox', true);
+
         return view('admin.election.index', ['elections' => $elections]);
     }
 
-
-
     public function create()
     {
-        return view('admin.election.create');  
+        $faculties = [
+            'FMIPA', 'FATISDA', 'FEB', 'FISIP', 'FT', 'FSRD', 'FK', 'FH', 'FKIP', 'FIB', 'FP', 'Psikologi', 'FKO'
+        ];
+
+        return view('admin.election.create', compact('faculties'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $request->validate([
             'name' => 'required|string|max:255',
             'faculty' => 'required|string|max:255',
@@ -40,9 +69,23 @@ class ElectionController extends Controller
         return redirect()->route('admin.election')->with('success', 'Election created successfully');
     }
 
-    public function view($id)
+    public function edit($id)
     {
         $election = Election::find($id);
+
+        if (!$election) {
+            return redirect()->route('admin.election')->withErrors('Election not found');
+        }
+
+        $user = Auth::user();
+        if ($user && $user->hasRole('admin_fakultas') && $election->faculty != $user->faculty) {
+            return redirect()->route('admin.election')->withErrors('You do not have permission to edit this election');
+        }
+
+        if ($user && $user->hasRole('admin_univ') && $election->faculty != 'Universitas') {
+            return redirect()->route('admin.election')->withErrors('You do not have permission to edit this election');
+        }
+
         return view('admin.election.edit', ['election' => $election]);
     }
 
@@ -57,6 +100,16 @@ class ElectionController extends Controller
         ]);
 
         $election = Election::find($id);
+
+        if (!$election) {
+            return redirect()->route('admin.election')->withErrors('Election not found');
+        }
+
+        $user = Auth::user();
+        if ($user && $user->hasRole('admin_fakultas') && $election->faculty != $user->faculty) {
+            return redirect()->route('admin.election')->withErrors('You do not have permission to update this election');
+        }
+
         $election->name = $request->name;
         $election->faculty = $request->faculty;
         $election->start_date = $request->start_date;
@@ -66,14 +119,23 @@ class ElectionController extends Controller
 
         return redirect()->route('admin.election')->with('success', 'Election updated successfully');
     }
+
     public function delete($id)
     {
         $election = Election::find($id);
-        // apabila terdapat data yang terkait dengan election, maka akan ada error
-        if ($election->candidates->count() > 0) {
-            return redirect()->route('admin.election')->withErrors('Election cannot be deleted because it has candidates');
+
+        if (!$election) {
+            return redirect()->route('admin.election')->withErrors('Election not found');
         }
-        else{
+
+        $user = Auth::user();
+        if ($user && $user->hasRole('admin_fakultas') && $election->faculty != $user->faculty) {
+            return redirect()->route('admin.election')->withErrors('You do not have permission to delete this election');
+        }
+
+        if ($election->candidates()->exists()) {
+            return redirect()->route('admin.election')->withErrors('Election cannot be deleted because it has candidates');
+        } else {
             $election->delete();
             return redirect()->route('admin.election')->with('success', 'Election deleted successfully');
         }
