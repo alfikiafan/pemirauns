@@ -57,7 +57,10 @@ class PresidentCandidateController extends Controller
      */
     public function show(PresidentCandidate $presidentCandidate)
     {
-        //
+        // dd($presidentCandidate);
+        return view('admin.president_candidate.detail',[
+            'candidate' => $presidentCandidate
+        ]);
     }
 
     /**

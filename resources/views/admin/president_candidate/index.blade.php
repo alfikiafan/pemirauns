@@ -44,6 +44,9 @@
             </td>
             <td>
               <div class="d-flex align-items-center">
+                <a href="{{ route('president-candidate.show', $candidate) }}" class="me-2 badge bg-info">
+                    <i class="fas fa-eye"></i>
+                </a>
                 <a href="{{ route('president-candidate.edit', $candidate) }}" class="me-2 badge bg-warning">
                     <i class="fas fa-pencil-alt"></i>
                 </a>
