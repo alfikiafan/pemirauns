@@ -1,56 +1,4 @@
 @extends('layouts.app')
-<style>
-.card-body {
-    padding: 20px;
-}
-
-.card-img {
-    padding: 10px;
-    max-width: 100%;
-    height: auto;
-}
-
-.card-flex {
-    display: flex;
-    flex-direction: row;
-    /* Ensures the images are in a row */
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.card-flex>div {
-    flex: 1 1 30%;
-    /* Adjusts the width and allows wrapping */
-    text-align: center;
-}
-
-@media (max-width: 767.98px) {
-    .card-flex {
-        flex-direction: row;
-        /* Maintains row direction on smaller screens */
-    }
-
-    .card-flex>div {
-        flex: 1 1 30%;
-        /* Smaller size for images in row */
-        margin-bottom: 10px;
-        /* Space between items */
-    }
-
-    .card-body {
-        text-align: center;
-    }
-
-    .card-img {
-        width: 100%;
-        /* Adjust image size */
-        max-width: 100px;
-        /* Set a maximum width */
-        margin: 0 auto;
-    }
-}
-</style>
 
 @section('content')
 @if (session('success'))
@@ -64,40 +12,50 @@
     {{ session('error') }}
 </div>
 @endif
+
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             @foreach ($candidates as $candidate)
-
-
-            <div class="card mb-3">
-                <div class="card-flex">
-                    <div>
+            <div class="card mb-4 shadow-sm">
+                <div class="row no-gutters">
+                    <div class="col-md-3 text-center my-auto">
                         <img src="{{ $candidate->presidentCandidate->user->user_photo ? $candidate->presidentCandidate->user->user_photo : asset('assets/img/team-1.jpg') }}"
-                            class="card-img img-fluid" alt="President Photo">
+                            class="card-img img-fluid rounded-circle" alt="President Photo" style="max-width: 150px;">
                     </div>
-                    <div>
+                    <div class="col-md-3 text-center my-auto">
                         <img src="{{ $candidate->vicePresidentCandidate->user->user_photo ? $candidate->vicePresidentCandidate->user->user_photo : asset('assets/img/team-2.jpg') }}"
-                            class="card-img img-fluid" alt="Vice President Photo">
+                            class="card-img img-fluid rounded-circle" alt="Vice President Photo" style="max-width: 150px;">
                     </div>
-                    <div>
+                    <div class="col-md-6">
                         <div class="card-body">
-                            <h5 class="card-title"> {{ $candidate->presidentCandidate->user->name }}</h5>
-                            <h5 class="card-title">{{ $candidate->vicePresidentCandidate->user->name }}</h5>
-                            <a href="{{ route('user.vote.view', ['id' => $candidate->id]) }}"
-                                class="btn btn-primary">Details</a>
-                            <a href="{{ route('user.vote.selfie', ['candidate_id' => $candidate->id]) }}"
-                                class="btn btn-primary">Vote</a>
+                            <h5 class="d-flex align-items-center">
+                                <i class="fas fa-user-tie me-2 mb-0"></i>
+                                <span class="candidate-name mb-0">{{ $candidate->presidentCandidate->user->name }}</span>
+                                <a href="{{ route('user.president_candidate.profile', $candidate->presidentCandidate->id) }}" class="btn btn-link btn-sm ms-auto mb-0 text-decoration-none">Profile</a>
+                            </h5>
+                            <h5 class="d-flex align-items-center">
+                                    <i class="fas fa-user-tie me-2 mb-0"></i>
+                                    <span class="candidate-name mb-0">{{ $candidate->vicePresidentCandidate->user->name }}</span>
+                                    <a href="{{ route('user.vice_president_candidate.profile', $candidate->vicePresidentCandidate->id) }}" class="btn btn-link btn-sm ms-auto mb-0 text-decoration-none">Profile</a>
+                            </h5>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="{{ route('user.vote.view', ['id' => $candidate->id]) }}" class="btn btn-primary btn-sm">Details</a>
+                                <a href="{{ route('user.vote.selfie', ['candidate_id' => $candidate->id]) }}" class="btn btn-success btn-sm">Vote</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             @endforeach
-
-
         </div>
     </div>
 </div>
+
+<style>
+    .rounded-circle {
+        aspect-ratio: 1;
+    }
+</style>
 
 @endsection

@@ -81,6 +81,10 @@ Route::middleware('auth', 'voter')->group(function () {
     Route::get('/user/vote',[VotingController::class, 'index'])->name('user.vote');
     Route::get('/user/vote/{id}',[VotingController::class, 'view'])->name('user.vote.view');
     Route::post('/user/vote', [VotingController::class, 'vote'])->name('user.vote.submit');
+
+    Route::get('/user/candidates', [CandidateController::class, 'index'])->name('user.candidates.index');
+    Route::get('/president-candidate/{presidentCandidate}', [PresidentCandidateController::class, 'show'])->name('user.president_candidate.profile');
+    Route::get('/vice-president-candidate/{vicePresidentCandidate}', [VicePresidentCandidateController::class, 'show'])->name('user.vice_president_candidate.profile');
     Route::get('/vote/selfie/{candidate_id}', [VotingController::class, 'selfie'])->name('user.vote.selfie');
     Route::get('/user/information', [InformationController::class, 'userIndex'])->name('user.information.index');
 });

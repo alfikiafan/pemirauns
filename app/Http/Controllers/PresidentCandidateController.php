@@ -101,14 +101,22 @@ class PresidentCandidateController extends Controller
      */
     public function show(PresidentCandidate $presidentCandidate)
     {
-        // dd($presidentCandidate);
+        $user = Auth::user();
         $experience = Experience::where('user_id', $presidentCandidate->user_id)->get();
-        $achievments = Achievement::where('user_id', $presidentCandidate->user_id)->get();
-        // dd($experience);
+        $achievements = Achievement::where('user_id', $presidentCandidate->user_id)->get();
+        
+        if (!$user || (!$user->hasRole('superadmin') && !$user->hasRole('admin_univ') && !$user->hasRole('admin_fakultas'))) {
+            return view('user.candidates.president_candidate',[
+                'candidate' => $presidentCandidate,
+                'experience' => $experience,
+                'achievements' => $achievements
+            ]);
+        }
+
         return view('admin.president_candidate.detail',[
             'candidate' => $presidentCandidate,
             'experience' => $experience,
-            'achievments' => $achievments
+            'achievements' => $achievements
         ]);
     }
 

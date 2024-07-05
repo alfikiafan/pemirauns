@@ -23,7 +23,6 @@ class ExperienceController extends Controller
      */
     public function create($id)
     {   $user = User::where('id', $id)->get();
-        // dd($user[0]->name);
         return view ('admin.experience.create',[
             'user' => $user[0],
         ]);

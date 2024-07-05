@@ -27,8 +27,15 @@ class CandidateController extends Controller
             $candidatesQuery = Candidate::whereHas('election', function ($query) {
                 $query->where('faculty', 'Universitas');
             });
-        } else {
+        } elseif ($user && $user->hasRole('superadmin')) {
             $candidatesQuery = Candidate::query();
+        } else {
+            $candidatesQuery = Candidate::whereHas('election', function ($query) {
+                $query->where('faculty', 'Universitas')
+                    ->orWhere('faculty', Auth::user()->faculty);
+            })->whereHas('election', function ($query) {
+                $query->where('start_date', '>=', now()->subDays(30));
+            });
         }
 
         $search = request()->query('search');
@@ -53,6 +60,10 @@ class CandidateController extends Controller
 
         $candidates->appends(['search' => $search]);
         View::share('showSearchBox', true);
+        
+        if (!$user->hasRole('superadmin') && !$user->hasRole('admin_fakultas') && !$user->hasRole('admin_univ')) {
+            return view('user.candidates.index', compact('candidates'));
+        }
 
         return view('admin.candidates.index', compact('candidates'));
     }

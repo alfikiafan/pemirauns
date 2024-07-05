@@ -104,14 +104,23 @@ class VicePresidentCandidateController extends Controller
      */
     public function show(VicePresidentCandidate $vicePresidentCandidate)
     {
-        // dd($presidentCandidate);
+        $user = Auth::user();
+
         $experience = Experience::where('user_id', $vicePresidentCandidate->user_id)->get();
-        $achievments = Achievement::where('user_id', $vicePresidentCandidate->user_id)->get();
-        // dd($experience);
+        $achievements = Achievement::where('user_id', $vicePresidentCandidate->user_id)->get();
+
+        if (!$user || (!$user->hasRole('superadmin') && !$user->hasRole('admin_univ') && !$user->hasRole('admin_fakultas'))) {
+            return view('user.candidates.president_candidate',[
+                'candidate' => $vicePresidentCandidate,
+                'experience' => $experience,
+                'achievements' => $achievements
+            ]);
+        }
+
         return view('admin.vice_president_candidate.detail',[
             'candidate' => $vicePresidentCandidate,
             'experience' => $experience,
-            'achievments' => $achievments
+            'achievements' => $achievements
         ]);
     }
 

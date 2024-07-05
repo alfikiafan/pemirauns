@@ -59,7 +59,7 @@
             </div>
             <div>
                 <h3 class="mb-2">Achievement</h3>
-                @foreach ($achievments as $ach)
+                @foreach ($achievements as $ach)
                     <p class="mb-0 text-sm" style="font-weight: bold;">{{ $ach->name }}</p>
                     <p class="mb-0 text-sm">{{ $ach->description }}</p>
                     <form action="{{ route('achievement.destroy', ['id' => $candidate->id, 'achievement' => $ach->id]) }}" method="POST" style="display: inline-block;">
@@ -69,6 +69,10 @@
                     </form>
                     <hr>
                 @endforeach
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                <a href="/admin/vice-president-candidate" class="btn bg-gradient-info">Kembali</a>
             </div>
         </div>
     </div>
