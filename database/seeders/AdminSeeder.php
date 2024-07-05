@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
 {
@@ -14,14 +15,16 @@ class AdminSeeder extends Seeder
     public function run()
     {
         $superadminRole = Role::firstOrCreate(['name' => 'superadmin']);
+        $email = $this->command->ask('Enter super admin email', 'admin@pemira.com');
+        $password = $this->command->ask('Enter super admin password', 'admin123');
 
         $superadmin = User::create([
             'name' => 'Super Admin',
             'nim' => '0',
-            'email' => 'admin@pemira.com',
-            'password' => bcrypt('admin123'),
-            'batch' => 2020,
-            'faculty' => 'FATISDA',
+            'email' => $email,
+            'password' => Hash::make($password),
+            'batch' => 0,
+            'faculty' => '',
             'user_status' => 'approved',
             'email_verified_at' => now(),
         ]);

@@ -12,18 +12,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            AdminSeeder::class,
-            RoleSeeder::class,
-            UserSeeder::class,
-            InformationSeeder::class,
-            VicePresidentCandidateSeeder::class,
-            PresidentCandidateSeeder::class,
-            ExperienceSeeder::class,
-            AchievementSeeder::class,
-            ElectionSeeder::class,
-            CandidateSeeder::class,
-            VoteSeeder::class,
-        ]);
+        if ($this->command->confirm('Apakah Anda ingin membuat akun superadmin?', true)) {
+            $this->call(AdminSeeder::class);
+        } else {
+            $this->call([
+                AdminSeeder::class,
+                RoleSeeder::class,
+                UserSeeder::class,
+                InformationSeeder::class,
+                VicePresidentCandidateSeeder::class,
+                PresidentCandidateSeeder::class,
+                ExperienceSeeder::class,
+                AchievementSeeder::class,
+                ElectionSeeder::class,
+                CandidateSeeder::class,
+                VoteSeeder::class,
+            ]);
+        }
     }
 }
