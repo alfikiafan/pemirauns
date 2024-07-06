@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\View;
 use App\Models\User;
 use App\Models\Role;
 use App\Mail\UserRejected;
+use App\Mail\UserApproved;
 
 class VoterController extends Controller
 {
@@ -71,8 +72,9 @@ class VoterController extends Controller
 
             return redirect()->route('admin.users.index')->with('success', 'User account has been rejected and deleted successfully.');
         } else {
-            $user->user_status = $request->user_status; 
+            $user->user_status = $request->user_status;
             $user->save();
+            Mail::to($user->email)->send(new UserApproved($user));
 
             return redirect()->route('admin.users.index')->with('success', 'User status updated successfully.');
         }
